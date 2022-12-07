@@ -52,3 +52,6 @@ Finall project for Mobile Developement course at ISEP
 
 later 
 - lottie
+
+## UI
+https://www.figma.com/file/Nldf99VMBrkpcyr9qAGUMI/Event-Planner?node-id=52695%3A23854&t=FTEVBrZ58nMxoFie-1
