@@ -42,8 +42,9 @@ class LoginRegisterActivity : AppCompatActivity() {
             reload();
         }
     }
-    
+
     fun createAccount(email: String, password: String) {
+        // TODO create user with email pasword and displayname
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -83,6 +84,7 @@ class LoginRegisterActivity : AppCompatActivity() {
         // [END sign_in_with_email]
     }
 
+    // TODO verification of the email
     private fun sendEmailVerification() {
         // [START send_email_verification]
         val user = auth.currentUser!!
