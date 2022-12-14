@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "829591193732",
+    "project_id": "eventplanner-d6536",
+    "storage_bucket": "eventplanner-d6536.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829591193732:android:9406f11062504a9ad15ad1",
+        "android_client_info": {
+          "package_name": "fr.isep.wegotcups"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829591193732-af8udag2d8n7poiv7cd9h7178c028s39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWMX44N8I2O5L-ThiQESZk_xpk6Hy9BC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829591193732-af8udag2d8n7poiv7cd9h7178c028s39.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

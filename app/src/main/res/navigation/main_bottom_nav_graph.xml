@@ -2,17 +2,17 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/LoginFragment">
+    android:id="@+id/main_bottom_nav_graph"
+    app:startDestination="@id/EntryFragment">
 
     <fragment
-        android:id="@+id/LoginFragment"
+        android:id="@+id/EntryFragment"
         android:name="fr.isep.wegotcups.LoginFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_login">
+        tools:layout="@layout/fragment_entry">
 
         <action
-            android:id="@+id/action_LoginFragment_to_RegisterFragment"
+            android:id="@+id/action_first_to_second"
             app:destination="@id/RegisterFragment" />
     </fragment>
     <fragment
@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_register">
 
         <action
-            android:id="@+id/action_RegisterFragment_to_LoginFragment"
+            android:id="@+id/action_second_to_first"
             app:destination="@id/LoginFragment" />
     </fragment>
 </navigation>
