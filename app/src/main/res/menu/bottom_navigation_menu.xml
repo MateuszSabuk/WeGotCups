@@ -4,15 +4,20 @@
         android:id="@+id/item_1"
         android:enabled="true"
         android:icon="@drawable/ic_android_black_24dp"
-        android:title="First"/>
+        android:title="Events"/>
     <item
         android:id="@+id/item_2"
         android:enabled="true"
         android:icon="@drawable/ic_android_black_24dp"
-        android:title="secondItem"/>
+        android:title="Tasks"/>
     <item
         android:id="@+id/item_3"
         android:enabled="true"
         android:icon="@drawable/ic_android_black_24dp"
-        android:title="a"/>
+        android:title="Notifications"/>
+    <item
+        android:id="@+id/item_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_android_black_24dp"
+        android:title="Profile"/>
 </menu>

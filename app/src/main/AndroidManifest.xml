@@ -20,7 +20,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".LoginRegisterActivity"
+            android:name=".loginregister.LoginRegisterActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.WeGotCups">

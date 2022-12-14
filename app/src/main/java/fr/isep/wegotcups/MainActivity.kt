@@ -2,15 +2,10 @@ package fr.isep.wegotcups
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import fr.isep.wegotcups.databinding.ActivityMainBinding
+import fr.isep.wegotcups.loginregister.LoginFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +27,14 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                     R.id.item_2 -> {
+                        loadFragment(LoginFragment())
+                        true
+                    }
+                    R.id.item_3 -> {
+                        loadFragment(LoginFragment())
+                        true
+                    }
+                    R.id.item_4 -> {
                         loadFragment(LoginFragment())
                         true
                     }
