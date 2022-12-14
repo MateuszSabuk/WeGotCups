@@ -24,6 +24,12 @@ class LoginRegisterActivity : AppCompatActivity() {
 
         // Firebase initialization
         auth = Firebase.auth
+
+        // Auto Login
+        if (auth.currentUser != null) {
+            updateUI(auth.currentUser)
+        }
+
         binding = ActivityLoginregisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }

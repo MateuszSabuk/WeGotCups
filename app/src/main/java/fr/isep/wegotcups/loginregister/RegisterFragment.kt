@@ -36,9 +36,9 @@ class RegisterFragment : Fragment() {
         }
 
         binding.buttonRegister.setOnClickListener {
-            // TODO input check
             val email: String = binding.emailTextField.editText?.text.toString()
             val password: String = binding.passwordTextField.editText?.text.toString()
+            // TODO input check
             Log.d("email", email)
             Log.d("password", password)
             if (activity is LoginRegisterActivity) {

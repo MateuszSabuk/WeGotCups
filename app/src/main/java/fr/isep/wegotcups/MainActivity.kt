@@ -1,12 +1,15 @@
 package fr.isep.wegotcups
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import fr.isep.wegotcups.databinding.ActivityMainBinding
 import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.loginregister.LoginFragment
+import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                     R.id.item_4 -> {
-                        loadFragment(LoginFragment())
+                        loadFragment(ProfileFragment())
                         true
                     }
                     else -> false
@@ -49,5 +52,14 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.main_fragment_container,fragment)
         transaction.commit()
         }
+
+    fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this, LoginRegisterActivity::class.java).apply {
+            // you can add values(if any) to pass to the next class or avoid using `.apply`
+            putExtra("doLogout", true)
+        })
+        finish()
+    }
 
 }
