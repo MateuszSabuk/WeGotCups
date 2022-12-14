@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import fr.isep.wegotcups.databinding.ActivityMainBinding
+import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.loginregister.LoginFragment
 
 class MainActivity : AppCompatActivity() {
