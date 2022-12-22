@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databinding.FragmentEntryBinding
 
 class EntryFragment : Fragment() {
@@ -23,19 +24,20 @@ class EntryFragment : Fragment() {
     ): View? {
         _binding = FragmentEntryBinding.inflate(inflater, container, false)
         return binding.root
-
    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.newEventBottomSheet.visibility = View.GONE
-
-//        binding.newEventBottomSheet.h = 0
-
 
         binding.newEvent.setOnClickListener(){
-            binding.newEventBottomSheet.visibility = View.VISIBLE
-//            binding.newEventBottomSheet.height = 100
+            // TODO - @Patrik button not working
+            loadFragment(ViewPagerFragment())
         }
+    }
+
+    private  fun loadFragment(fragment: Fragment){
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_fragment_container,fragment)
+        transaction.commit()
     }
 }

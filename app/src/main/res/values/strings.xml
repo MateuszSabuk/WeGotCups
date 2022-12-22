@@ -58,4 +58,6 @@
     <string name="nameTextField">Name</string>
     <string name="wrongNewName">Wrong name format</string>
     <string name="wrongRepeatPassword">Passwords do not match</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
 </resources>

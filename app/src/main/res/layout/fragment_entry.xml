@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/entry_fragment">
+    android:id="@+id/EntryFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello user" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
@@ -19,22 +30,6 @@
             android:contentDescription="Create event"
             android:text="New event"
             app:icon="@drawable/ic_baseline_create_24"/>
-
-        <FrameLayout
-            android:id="@+id/new_event_bottom_sheet"
-            style="@style/Widget.Material3.BottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:behavior_hideable="true"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="HEllo world"/>
-
-
-        </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
