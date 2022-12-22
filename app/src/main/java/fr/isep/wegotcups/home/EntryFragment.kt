@@ -35,7 +35,7 @@ class EntryFragment : Fragment() {
         }
     }
 
-    private  fun loadFragment(fragment: Fragment){
+    private fun loadFragment(fragment: Fragment){
         val transaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.main_fragment_container,fragment)
         transaction.commit()

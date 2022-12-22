@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databinding.FragmentNameEvenBinding
 
-class NameEventFragment : Fragment() {
+class NameEventFragment : FragmentNavigation() {
     private var _binding: FragmentNameEvenBinding? = null
     private val binding get() = _binding!!
 
@@ -23,7 +23,7 @@ class NameEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.nameNext.setOnClickListener {
-            findNavController().navigate(R.id.action_first_to_second)
+            loadFragment(DateEventFragment())
         }
     }
 
