@@ -34,7 +34,7 @@ class DateEventFragment : FragmentNavigation() {
         }
 
         binding.nextButton.setOnClickListener(){
-            loadFragment(CoverPhotoEventFragment())
+            loadFragment(LocationEventFragment())
         }
     }
 

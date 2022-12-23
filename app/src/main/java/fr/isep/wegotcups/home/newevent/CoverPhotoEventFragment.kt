@@ -30,6 +30,10 @@ class CoverPhotoEventFragment : FragmentNavigation() {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
+
+        binding.nextButton.setOnClickListener(){
+            loadFragment(DressCodeEventFragment())
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
