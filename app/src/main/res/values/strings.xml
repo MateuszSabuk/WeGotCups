@@ -66,4 +66,6 @@
     <string name="event_name">Event name</string>
     <string name="skip">Skip</string>
     <string name="address">Address</string>
+    <string name="back">Back</string>
+    <string name="finish">Finish</string>
 </resources>

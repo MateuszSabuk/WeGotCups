@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databinding.FragmentDressCodeEventBinding
 
 class DressCodeEventFragment : FragmentNavigation() {
