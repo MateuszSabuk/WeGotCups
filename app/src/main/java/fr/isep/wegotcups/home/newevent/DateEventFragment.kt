@@ -25,17 +25,16 @@ class DateEventFragment : FragmentNavigation() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Select date")
-                .build()
-
         binding.selectDate.setOnClickListener{
             openDatePicker()
         }
 
         binding.selectTime.setOnClickListener(){
             openTimePicker()
+        }
+
+        binding.nextButton.setOnClickListener(){
+            loadFragment(CoverPhotoEventFragment())
         }
     }
 

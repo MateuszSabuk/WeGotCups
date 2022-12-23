@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databinding.FragmentViewPagerBinding
+import fr.isep.wegotcups.home.newevent.CoverPhotoEventFragment
 import fr.isep.wegotcups.home.newevent.DateEventFragment
 import fr.isep.wegotcups.home.newevent.NameEventFragment
 
@@ -31,7 +32,8 @@ class ViewPagerFragment : Fragment() {
 
         val fragmentList = arrayListOf<Fragment>(
             NameEventFragment(),
-            DateEventFragment()
+            DateEventFragment(),
+            CoverPhotoEventFragment()
         )
 
         val adapter = ViewPagerAdapter(

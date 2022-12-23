@@ -1,12 +1,9 @@
 package fr.isep.wegotcups.home.newevent
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databinding.FragmentNameEvenBinding
 
 class NameEventFragment : FragmentNavigation() {
@@ -22,7 +19,7 @@ class NameEventFragment : FragmentNavigation() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.nameNext.setOnClickListener {
+        binding.nextButton.setOnClickListener {
             loadFragment(DateEventFragment())
         }
     }
