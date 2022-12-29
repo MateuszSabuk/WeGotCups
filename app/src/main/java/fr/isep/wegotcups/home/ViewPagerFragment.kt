@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.databinding.FragmentNameEvenBinding
 import fr.isep.wegotcups.databinding.FragmentViewPagerBinding
 import fr.isep.wegotcups.home.newevent.CoverPhotoEventFragment
 import fr.isep.wegotcups.home.newevent.DateEventFragment

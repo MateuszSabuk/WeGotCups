@@ -8,23 +8,17 @@ import android.view.ViewGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentDateEventBinding
+import fr.isep.wegotcups.databinding.FragmentNameEvenBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateEventFragment : FragmentNavigation() {
-    private var _binding: FragmentDateEventBinding? = null
-    private val binding get() = _binding!!
+class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDateEventBinding
+            = FragmentDateEventBinding::inflate
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDateEventBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun setup() {
         binding.selectDate.setOnClickListener{
             openDatePicker()
         }
