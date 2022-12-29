@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class ViewBindingFragment<VB : ViewBinding>: Fragment(){
+abstract class ViewBindingBottomSheetFragment <VB : ViewBinding>: BottomSheetDialogFragment(){
 
     private var _binding: ViewBinding? = null
     abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
@@ -47,6 +47,7 @@ abstract class ViewBindingFragment<VB : ViewBinding>: Fragment(){
     }
 
     fun showBottomSheetDialogFragment(dialog: BottomSheetDialogFragment){
+        this.dialog?.hide()
         val transaction = parentFragmentManager.beginTransaction()
         dialog.show(transaction, "TAG")
     }

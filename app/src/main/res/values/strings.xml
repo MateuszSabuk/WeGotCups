@@ -71,4 +71,10 @@
     <string name="location">Location</string>
     <string name="description">Description</string>
     <string name="dress_code">Dress code</string>
+    <string name="i_will_bring">I will bring...</string>
+    <string name="voting">Voting</string>
+    <string name="spotify_playlist">Spotify playlist</string>
+    <string name="add_section">Add section</string>
+    <string name="done">Done</string>
+    <string name="menu">Menu</string>
 </resources>
