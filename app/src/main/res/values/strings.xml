@@ -68,4 +68,7 @@
     <string name="address">Address</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
+    <string name="dress_code">Dress code</string>
 </resources>
