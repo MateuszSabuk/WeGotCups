@@ -1,43 +1,33 @@
 package fr.isep.wegotcups.home
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentEntryBinding
+import fr.isep.wegotcups.event.EventDetailFragment
 
-class EntryFragment : Fragment() {
+class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEntryBinding
+        get() = FragmentEntryBinding::inflate
 
-    private var _binding: FragmentEntryBinding? = null
-
-    private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentEntryBinding.inflate(inflater, container, false)
-        return binding.root
-   }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup() {
         binding.newEvent.setOnClickListener(){
-            // TODO - @Patrik button not working
             loadFragment(ViewPagerFragment())
         }
+
+        binding.eventRecyclerView.layoutManager = LinearLayoutManager(context)
+        val data = ArrayList<EventItemViewModel>()
+        for (i in 1..20) {
+            data.add(EventItemViewModel(R.drawable.event_cover, "Event " + i, "12.10.2022 12:37"))
+        }
+        val adapter = CustomAdapter(data) { position -> onListItemClick(position) }
+        binding.eventRecyclerView.adapter = adapter
     }
 
-    private fun loadFragment(fragment: Fragment){
-        val transaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_fragment_container,fragment)
-        transaction.commit()
+    private fun onListItemClick(position: Int) {
+        loadFragment(EventDetailFragment())
     }
 }
