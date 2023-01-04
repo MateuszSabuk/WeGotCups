@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:text="This is the wegotcups login/register activity"
+        android:text=""
         android:id="@+id/login_activity_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
