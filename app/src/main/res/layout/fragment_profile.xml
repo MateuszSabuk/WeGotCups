@@ -9,18 +9,22 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_fragment_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/profile_fragment_name"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/event_cover" />
+        app:srcCompat="@drawable/event_cover"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        android:scaleType="centerCrop"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/profile_fragment_name"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        style="@style/TextAppearance.MaterialComponents.Headline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Marcel Pekny"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +33,10 @@
 
     </com.google.android.material.textview.MaterialTextView>
 
+
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/profile_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -39,11 +46,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_fragment_name">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello how are you" />
+            android:text="@string/email" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="donald.trump@email.com" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -54,6 +73,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_fragment_name" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

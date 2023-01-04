@@ -10,6 +10,7 @@ import fr.isep.wegotcups.databinding.FragmentNameEvenBinding
 import fr.isep.wegotcups.databinding.FragmentViewPagerBinding
 import fr.isep.wegotcups.home.newevent.CoverPhotoEventFragment
 import fr.isep.wegotcups.home.newevent.DateEventFragment
+import fr.isep.wegotcups.home.newevent.LocationEventFragment
 import fr.isep.wegotcups.home.newevent.NameEventFragment
 
 class ViewPagerFragment : Fragment() {
@@ -31,10 +32,12 @@ class ViewPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO @Patrik - remake it
         val fragmentList = arrayListOf<Fragment>(
             NameEventFragment(),
-            DateEventFragment(),
-            CoverPhotoEventFragment()
+//            DateEventFragment(),
+//            CoverPhotoEventFragment(),
+//            LocationEventFragment()
         )
 
         val adapter = ViewPagerAdapter(
