@@ -34,9 +34,10 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_LoginFragment_to_RegisterFragment)
         }
         binding.buttonLogin.setOnClickListener {
-            // TODO input check
+            val email: String = binding.emailTextField.editText?.text.toString()
+            val pass: String = binding.passwordTextField.editText?.text.toString()
             if (activity is LoginRegisterActivity) {
-                (activity as LoginRegisterActivity).signIn("mateusz@sabuk.pl","hello1234")
+                (activity as LoginRegisterActivity).signIn(email,pass)
             }
         }
     }

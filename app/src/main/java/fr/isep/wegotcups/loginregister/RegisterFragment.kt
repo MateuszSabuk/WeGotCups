@@ -57,7 +57,7 @@ class RegisterFragment : Fragment() {
                 ).show()
             } else {
                 if (activity is LoginRegisterActivity) {
-                    (activity as LoginRegisterActivity).createAccount(email,password)
+                    (activity as LoginRegisterActivity).createAccount(email, name, password)
                 }
             }
         }

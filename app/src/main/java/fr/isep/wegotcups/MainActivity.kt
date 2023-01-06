@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import fr.isep.wegotcups.databinding.ActivityMainBinding
 import fr.isep.wegotcups.event.EventData
 import fr.isep.wegotcups.event.EventDetailFragment
@@ -18,10 +21,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     public var newEventData: EventData = EventData()
 
+    private lateinit var auth: FirebaseAuth
+    var user: FirebaseUser? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        auth = Firebase.auth
+        user = auth.currentUser
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

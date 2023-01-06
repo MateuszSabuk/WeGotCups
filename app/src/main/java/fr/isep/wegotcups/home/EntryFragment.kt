@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentEntryBinding
@@ -14,6 +15,8 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         get() = FragmentEntryBinding::inflate
 
     override fun setup() {
+        binding.helloUsername.text = (activity as MainActivity).user?.displayName.toString()
+
         binding.newEvent.setOnClickListener(){
             loadFragment(ViewPagerFragment())
         }
