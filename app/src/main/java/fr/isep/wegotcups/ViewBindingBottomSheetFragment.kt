@@ -39,6 +39,7 @@ abstract class ViewBindingBottomSheetFragment <VB : ViewBinding>: BottomSheetDia
     }
 
     fun loadFragment(fragment: Fragment){
+        // TODO scrolling of the add name fragment for some reason
         val transaction = parentFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         transaction.replace(R.id.main_fragment_container,fragment)

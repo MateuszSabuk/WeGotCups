@@ -7,6 +7,7 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import fr.isep.wegotcups.databinding.ActivityMainBinding
+import fr.isep.wegotcups.event.EventData
 import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.loginregister.LoginFragment
@@ -15,6 +16,7 @@ import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    public var newEventData: EventData = EventData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

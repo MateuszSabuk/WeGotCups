@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import fr.isep.wegotcups.event.EventData
 
 abstract class ViewBindingFragment<VB : ViewBinding>: Fragment(){
+
+    protected var eventData: EventData = EventData()
 
     private var _binding: ViewBinding? = null
     abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB

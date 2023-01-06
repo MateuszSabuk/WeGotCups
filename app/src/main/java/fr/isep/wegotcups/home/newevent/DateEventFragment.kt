@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentDateEventBinding
 import fr.isep.wegotcups.databinding.FragmentNameEvenBinding
@@ -28,6 +29,9 @@ class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
         }
 
         binding.nextButton.setOnClickListener(){
+            //TODO validate the inputs
+            (activity as MainActivity).newEventData.date = binding.date.hint.toString()
+            (activity as MainActivity).newEventData.time = binding.time.hint.toString()
             loadFragment(LocationEventFragment())
         }
     }
