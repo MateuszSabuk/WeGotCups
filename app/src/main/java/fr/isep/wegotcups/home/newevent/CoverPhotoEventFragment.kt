@@ -8,30 +8,27 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import fr.isep.wegotcups.MainActivity
+import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentCoverPhotoEventBinding
+import fr.isep.wegotcups.databinding.FragmentLocationEventBinding
 
-class CoverPhotoEventFragment : FragmentNavigation() {
-    private var _binding: FragmentCoverPhotoEventBinding? = null
-    private val binding get() = _binding!!
+class CoverPhotoEventFragment : ViewBindingFragment<FragmentCoverPhotoEventBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCoverPhotoEventBinding
+            = FragmentCoverPhotoEventBinding::inflate
 
     private val pickImage = 100
     private var imageUri: Uri? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-       _binding = FragmentCoverPhotoEventBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun setup() {
         binding.imageView.setOnClickListener(){
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
-
-        binding.nextButton.setOnClickListener(){
+        binding.nextButton.setOnClickListener {
+            //TODO validate image input
+            (activity as MainActivity).newEventData.imageUri = imageUri
             loadFragment(DressCodeEventFragment())
         }
     }

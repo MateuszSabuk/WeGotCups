@@ -33,6 +33,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get data from the user
         binding.profileFragmentName.text = user?.displayName.toString()
         binding.buttonLogout.setOnClickListener {
             if (activity is MainActivity) {
