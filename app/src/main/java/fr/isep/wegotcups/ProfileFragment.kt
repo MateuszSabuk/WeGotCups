@@ -1,8 +1,6 @@
 package fr.isep.wegotcups
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,7 @@ import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import fr.isep.wegotcups.databinding.FragmentProfileBinding
-import fr.isep.wegotcups.loginregister.LoginRegisterActivity
+import fr.isep.wegotcups.loginregister.AvatarFragment
 
 
 class ProfileFragment : Fragment() {
@@ -41,10 +39,21 @@ class ProfileFragment : Fragment() {
                 (activity as MainActivity).signOut()
             }
         }
+        binding.editPictureButton.setOnClickListener{
+            loadFragment(AvatarFragment())
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private  fun loadFragment(fragment: Fragment){
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        transaction.replace(R.id.main_fragment_container,fragment)
+        transaction.commit()
+    }
+
 }

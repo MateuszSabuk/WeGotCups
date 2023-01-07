@@ -9,15 +9,15 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_fragment_image"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
         android:layout_marginTop="32dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/event_cover"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        android:scaleType="centerCrop"/>
+        app:srcCompat="@drawable/event_cover" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/profile_fragment_name"
@@ -25,15 +25,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Marcel Pekny"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_fragment_image">
-
-    </com.google.android.material.textview.MaterialTextView>
+        app:layout_constraintTop_toBottomOf="@+id/edit_picture_button"/>
 
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profile_fragment_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="/@username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_fragment_image" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/profile_info"
@@ -74,5 +83,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_info" />
+
+    <Button
+        android:id="@+id/edit_picture_button"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/edit_picture_or_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_fragment_username" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

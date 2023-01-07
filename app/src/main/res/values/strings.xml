@@ -71,7 +71,13 @@
     <string name="location">Location</string>
     <string name="description">Description</string>
     <string name="dress_code">Dress code</string>
-    <string name="i_will_bring">I will bring...</string>
+    <string-array name="dress_code_styles">
+        <item>Formal</item>
+        <item>Business</item>
+        <item>Smart casual</item>
+        <item>Casual</item>
+    </string-array>
+    <string name="i_will_bring">I will bring…</string>
     <string name="voting">Voting</string>
     <string name="spotify_playlist">Spotify playlist</string>
     <string name="add_section">Add section</string>
@@ -80,4 +86,5 @@
     <string name="events">Events</string>
     <string name="wegotcups">WeGotCups</string>
     <string name="email">Email</string>
+    <string name="edit_picture_or_avatar">Edit picture or avatar</string>
 </resources>

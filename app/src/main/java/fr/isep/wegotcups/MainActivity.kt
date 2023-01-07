@@ -7,10 +7,10 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import fr.isep.wegotcups.databinding.ActivityMainBinding
-import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.EntryFragment
-import fr.isep.wegotcups.loginregister.LoginFragment
+import fr.isep.wegotcups.loginregister.AvatarFragment
 import fr.isep.wegotcups.loginregister.LoginRegisterActivity
+import fr.isep.wegotcups.notification.NotificationFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                     R.id.item_2 -> {
-                        loadFragment(EventDetailFragment())
+                        loadFragment(AvatarFragment())
                         true
                     }
                     R.id.item_3 -> {
-                        loadFragment(LoginFragment())
+                        loadFragment(NotificationFragment())
                         true
                     }
                     R.id.item_4 -> {

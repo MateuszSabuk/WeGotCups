@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isep.wegotcups.R
 
-class CustomAdapter(private val mList: List<EventItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
-
+class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

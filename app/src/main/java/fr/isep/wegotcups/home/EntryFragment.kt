@@ -2,7 +2,6 @@ package fr.isep.wegotcups.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
@@ -23,7 +22,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         for (i in 1..20) {
             data.add(EventItemViewModel(R.drawable.event_cover, "Event " + i, "12.10.2022 12:37"))
         }
-        val adapter = CustomAdapter(data) { position -> onListItemClick(position) }
+        val adapter = EventsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         binding.eventRecyclerView.adapter = adapter
     }
 

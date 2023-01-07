@@ -17,6 +17,9 @@ class EventDetailFragment : ViewBindingFragment<FragmentEventDetailBinding>() {
         binding.addSection.setOnClickListener{
             showBottomSheetDialogFragment(AddSectionFragment())
         }
-    }
 
+        binding.editBasicInfo.setOnClickListener{
+            loadFragment(EditEventFragment())
+        }
+    }
 }
