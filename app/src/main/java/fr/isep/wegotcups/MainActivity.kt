@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                     R.id.item_2 -> {
-                        loadFragment(AvatarFragment())
+                        loadFragment(EventDetailFragment())
                         true
                     }
                     R.id.item_3 -> {

@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/imageview"
+                    android:id="@+id/event_cover_photo_image_view"
                     android:layout_width="64dp"
                     android:layout_height="66dp"
                     android:adjustViewBounds="true"

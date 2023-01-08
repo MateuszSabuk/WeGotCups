@@ -29,7 +29,7 @@ class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItem
 
     class ViewHolder(ItemView: View, private val onItemClicked: (position: Int) -> Unit)
         : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
-        val imageView: ImageView = itemView.findViewById(R.id.imageview)
+        val imageView: ImageView = itemView.findViewById(R.id.event_cover_photo_image_view)
         val textName: TextView = itemView.findViewById(R.id.event_name)
         val textDateAndTime: TextView = itemView.findViewById(R.id.event_date)
 
