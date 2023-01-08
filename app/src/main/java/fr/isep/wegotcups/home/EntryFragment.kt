@@ -8,6 +8,7 @@ import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentEntryBinding
 import fr.isep.wegotcups.event.EventDetailFragment
+import fr.isep.wegotcups.home.newevent.NameEventFragment
 
 class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEntryBinding
@@ -17,7 +18,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         binding.helloUsername.text = (activity as MainActivity).user?.displayName.toString()
 
         binding.newEvent.setOnClickListener(){
-            loadFragment(ViewPagerFragment())
+            loadFragment(NameEventFragment())
         }
 
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(context)

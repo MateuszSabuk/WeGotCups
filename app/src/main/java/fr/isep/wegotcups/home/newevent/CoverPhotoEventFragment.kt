@@ -26,10 +26,13 @@ class CoverPhotoEventFragment : ViewBindingFragment<FragmentCoverPhotoEventBindi
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
-        binding.nextButton.setOnClickListener {
+        binding.nextButton.setOnClickListener() {
             //TODO validate image input
             (activity as MainActivity).newEventData.imageUri = imageUri
             loadFragment(DressCodeEventFragment())
+        }
+        binding.backCancel.setOnClickListener(){
+            loadFragmentFromLeft(LocationEventFragment())
         }
     }
 

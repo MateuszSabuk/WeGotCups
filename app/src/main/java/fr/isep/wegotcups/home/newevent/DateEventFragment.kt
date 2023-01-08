@@ -34,6 +34,11 @@ class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
             (activity as MainActivity).newEventData.time = binding.time.hint.toString()
             loadFragment(LocationEventFragment())
         }
+
+        binding.backButton.setOnClickListener(){
+            //TODO
+            loadFragmentFromLeft(NameEventFragment())
+        }
     }
 
     private fun openDatePicker(){

@@ -41,6 +41,13 @@ abstract class ViewBindingFragment<VB : ViewBinding>: Fragment(){
         _binding = null
     }
 
+    fun loadFragmentFromLeft(fragment: Fragment){
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        transaction.replace(R.id.main_fragment_container,fragment)
+        transaction.commit()
+    }
+
     fun loadFragment(fragment: Fragment){
         val transaction = parentFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
