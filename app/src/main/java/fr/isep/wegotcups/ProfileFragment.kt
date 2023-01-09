@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentProfileBinding
 import fr.isep.wegotcups.loginregister.AvatarFragment
 
@@ -43,6 +44,7 @@ class ProfileFragment : Fragment() {
         binding.editPictureButton.setOnClickListener{
             loadFragment(AvatarFragment())
         }
+
     }
 
     override fun onDestroyView() {

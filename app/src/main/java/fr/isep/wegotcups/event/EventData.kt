@@ -14,9 +14,7 @@ class EventData {
     lateinit var time: String
     lateinit var location: String
     var imageUri: Uri? = null
-    lateinit var dressCode: String
+    lateinit var dresscode: String
     lateinit var description: String
-
-
 
 }

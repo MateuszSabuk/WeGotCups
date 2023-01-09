@@ -16,11 +16,12 @@ class DressCodeEventFragment : ViewBindingFragment<FragmentDressCodeEventBinding
         binding.nextButton.setOnClickListener {
             for (it in binding.checkboxContainer.children){
                 if ((it as MaterialCheckBox).isChecked){
-                    (activity as MainActivity).newEventData.dressCode = (it as MaterialCheckBox).text.toString()
+                    (activity as MainActivity).newEventData.dresscode = (it as MaterialCheckBox).text.toString()
                 }
             }
             //TODO Input the dress code
             //TODO validate location input
+            //TODO Change input to a radio
             loadFragment(DescriptionEventFragment())
         }
 

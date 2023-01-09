@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentDoneEventBinding
 import fr.isep.wegotcups.databinding.FragmentLocationEventBinding
 import fr.isep.wegotcups.event.EventData
@@ -19,7 +20,8 @@ class DoneEventFragment : ViewBindingFragment<FragmentDoneEventBinding>() {
 
     override fun setup() {
         //Send and reset event data stored in main activity
-        (activity as MainActivity).newEventData.sendToDatabase()
+        val dbh = DatabaseHandler()
+        dbh.addEvent((activity as MainActivity).newEventData)
         (activity as MainActivity).newEventData = EventData()
 
         binding.nextButton.setOnClickListener {
