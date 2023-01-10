@@ -1,5 +1,6 @@
 package fr.isep.wegotcups
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentProfileBinding
 import fr.isep.wegotcups.loginregister.AvatarFragment
+import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 
 
 class ProfileFragment : Fragment() {
@@ -43,6 +45,10 @@ class ProfileFragment : Fragment() {
         }
         binding.editPictureButton.setOnClickListener{
             loadFragment(AvatarFragment())
+        }
+
+        binding.myFriendsButton.setOnClickListener {
+            startActivity(Intent(activity, FriendsActivity::class.java))
         }
 
     }

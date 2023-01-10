@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
     fun signOut() {
         FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginRegisterActivity::class.java).apply {
-            // you can add values(if any) to pass to the next class or avoid using `.apply`
             putExtra("doLogout", true)
         })
         finish()

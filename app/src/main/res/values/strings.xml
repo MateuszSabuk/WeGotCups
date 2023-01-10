@@ -90,4 +90,5 @@
     <string name="add_person_to_the_event">Add person to the event</string>
     <string name="add_person">Add person</string>
     <string name="add_task">Add task</string>
+    <string name="my_friends">My friends</string>
 </resources>
