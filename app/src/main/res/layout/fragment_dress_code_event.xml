@@ -55,32 +55,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-            <CheckBox
-                android:id="@+id/checkbox_child_1"
+            <RadioGroup
+                android:id="@+id/radio_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Formal" />
+                android:layout_height="match_parent">
+                <RadioButton
+                    android:id="@+id/radio_button_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Formal" />
 
-            <CheckBox
-                android:id="@+id/checkbox_child_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Business" />
+                <RadioButton
+                    android:id="@+id/radio_button_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Business" />
 
-            <CheckBox
-                android:id="@+id/checkbox_child_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Smart casual" />
+                <RadioButton
+                    android:id="@+id/radio_button_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Smart casual" />
 
 
-            <CheckBox
-                android:id="@+id/checkbox_child_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Casual" />
-
+                <RadioButton
+                    android:id="@+id/radio_button_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Casual" />
+            </RadioGroup>
         </LinearLayout>
 
         <Button

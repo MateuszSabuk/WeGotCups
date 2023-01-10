@@ -2,7 +2,9 @@ package fr.isep.wegotcups.home.newevent
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.core.view.children
+import androidx.core.view.get
 import com.google.android.material.checkbox.MaterialCheckBox
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
@@ -14,19 +16,17 @@ class DressCodeEventFragment : ViewBindingFragment<FragmentDressCodeEventBinding
 
     override fun setup() {
         binding.nextButton.setOnClickListener {
-            for (it in binding.checkboxContainer.children){
-                if ((it as MaterialCheckBox).isChecked){
-                    (activity as MainActivity).newEventData.dresscode = (it as MaterialCheckBox).text.toString()
+            for (it in binding.radioGroup.children){
+                if ((it as RadioButton).isChecked){
+                    (activity as MainActivity).newEventData.dresscode = (it as RadioButton).text.toString()
                 }
             }
             //TODO Input the dress code
             //TODO validate location input
-            //TODO Change input to a radio
             loadFragment(DescriptionEventFragment())
         }
 
         binding.backButton.setOnClickListener(){
-            //TODO
             loadFragmentFromLeft(CoverPhotoEventFragment())
         }
     }
