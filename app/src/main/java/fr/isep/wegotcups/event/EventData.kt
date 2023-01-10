@@ -1,20 +1,31 @@
 package fr.isep.wegotcups.event
 
+import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
-import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class EventData {
+    constructor()
+
+    constructor(document: QueryDocumentSnapshot?){
+        name = document?.data?.get("name").toString()
+        date = document?.data?.get("date").toString()
+        time = document?.data?.get("time").toString()
+        Log.d(ContentValues.TAG, document?.data.toString())
+    }
+
+
     fun sendToDatabase() {
         Log.v("the child is: ", this.toString());
     }
 
-    lateinit var name: String
-    lateinit var date: String
-    lateinit var time: String
-    lateinit var location: String
+    var name: String? = null
+    var date: String? = null
+    var time: String? = null
+    var location: String? = null
     var imageUri: Uri? = null
-    lateinit var dresscode: String
-    lateinit var description: String
+    var dresscode: String? = null
+    var description: String? = null
 
 }

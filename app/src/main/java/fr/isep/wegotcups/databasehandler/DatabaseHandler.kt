@@ -30,17 +30,19 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-//    fun getMyEvents(includeSharedWithMe: Boolean = true) {
-//        db.collection("events")
-//            .whereEqualTo("capital", true)
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                for (document in documents) {
-//                    Log.d(TAG, "${document.id} => ${document.data}")
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.w(TAG, "Error getting documents: ", exception)
-//            }
-//    }
+    fun getMyEvents(funForEveryEvent: (EventData) -> Unit,afterEventsLoaded: () -> Unit, includeSharedWithMe: Boolean = true) {
+        db.collection("events")
+            .whereEqualTo("owner", auth.currentUser?.uid)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val event = EventData(document)
+                    funForEveryEvent(event)
+                }
+                afterEventsLoaded()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
 }

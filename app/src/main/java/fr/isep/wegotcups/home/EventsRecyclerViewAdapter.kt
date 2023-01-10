@@ -43,4 +43,7 @@ class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, pri
             onItemClicked(position)
         }
     }
+
+    //TODO Update adapter
+
 }

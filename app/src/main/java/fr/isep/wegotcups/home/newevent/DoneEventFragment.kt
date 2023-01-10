@@ -1,15 +1,11 @@
 package fr.isep.wegotcups.home.newevent
 
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentDoneEventBinding
-import fr.isep.wegotcups.databinding.FragmentLocationEventBinding
 import fr.isep.wegotcups.event.EventData
 import fr.isep.wegotcups.home.EntryFragment
 
