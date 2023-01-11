@@ -35,21 +35,36 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun getMyEvents(funForEveryEvent: (EventData) -> Unit,afterEventsLoaded: () -> Unit, includeSharedWithMe: Boolean = true) {
+    fun getMyEvents(funForEveryEvent: (EventData) -> Unit,afterEventsLoaded: () -> Unit) {
+        val currentUserReference: DocumentReference = db.document("/users/${auth.currentUser?.uid}")
         db.collection("events")
             .whereEqualTo("owner", auth.currentUser?.uid)
             .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val event = EventData(document)
-                    funForEveryEvent(event)
-                }
-                afterEventsLoaded()
+            .addOnSuccessListener { myDocuments ->
+                db.collection("events")
+                    .whereArrayContains("sharedWith", currentUserReference)
+                    .get()
+                    .addOnSuccessListener { sharedDocuments ->
+                        var documents = (myDocuments + sharedDocuments).distinct()
+                        for (document in documents) {
+                            val event = EventData(document)
+                            funForEveryEvent(event)
+                        }
+                        afterEventsLoaded()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents: ", exception)
+                    }
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
+
+    fun shareEventWithUser(event:EventData, uid:String){
+
+    }
+
 
     fun addFriend(uid: String){
         val docRef: DocumentReference = db.document("/users/$uid")
@@ -58,8 +73,13 @@ class DatabaseHandler {
                 if (user.exists()){
                     db.collection("users").document(auth.currentUser?.uid.toString())
                         .update("friends", FieldValue.arrayUnion(docRef))
-                        .addOnSuccessListener { Log.d(TAG, "Friend successfully added!") }
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Friend successfully added!")
+                            // TODO Send notification to the person
+                        }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                } else {
+                    Log.d(TAG, "User does not exist!")
                 }
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error looking for the document", e) }

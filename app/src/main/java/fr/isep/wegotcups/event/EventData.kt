@@ -15,11 +15,6 @@ class EventData {
         Log.d(ContentValues.TAG, document?.data.toString())
     }
 
-
-    fun sendToDatabase() {
-        Log.v("the child is: ", this.toString());
-    }
-
     var name: String? = null
     var date: String? = null
     var time: String? = null
