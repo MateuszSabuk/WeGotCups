@@ -37,8 +37,10 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateUsername()
+        (activity as MainActivity).userUpdateFunctions.add(::updateUsername)
+
         // Get data from the user
-        binding.profileFragmentName.text = user?.displayName.toString()
         binding.buttonLogout.setOnClickListener {
             if (activity is MainActivity) {
                 (activity as MainActivity).signOut()
@@ -69,6 +71,17 @@ class ProfileFragment : Fragment() {
         );
         transaction.replace(R.id.main_fragment_container,fragment)
         transaction.commit()
+    }
+
+    private fun updateUsername(){
+        val user = (activity as MainActivity).user
+        binding.profileFragmentName.text = user.name.toString()
+        binding.emailText.text = user.email.toString()
+        var userTag = ""
+        if (user.userTag.toString() != "null"){
+            userTag = user.userTag.toString()
+        }
+        binding.profileFragmentUsername.text = userTag
     }
 
 }

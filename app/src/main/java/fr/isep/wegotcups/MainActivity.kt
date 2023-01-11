@@ -9,8 +9,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityMainBinding
 import fr.isep.wegotcups.databasehandler.EventData
+import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.loginregister.LoginRegisterActivity
@@ -20,17 +22,17 @@ import fr.isep.wegotcups.profile.ProfileFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    public var newEventData: EventData = EventData()
+    var newEventData: EventData = EventData()
 
-    private lateinit var auth: FirebaseAuth
-    var user: FirebaseUser? = null
+    private val dbh = DatabaseHandler()
+
+    var user = User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        dbh.getUser(::userFun)
+
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        auth = Firebase.auth
-        user = auth.currentUser
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -73,4 +75,12 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
+    var userUpdateFunctions = mutableListOf<()->Unit>()
+
+     private fun userFun(u: User) {
+         user = u
+         for (function in userUpdateFunctions){
+             function()
+         }
+    }
 }

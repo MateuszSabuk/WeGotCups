@@ -121,14 +121,14 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error sending notification", e) }
     }
 
-    fun getMyFriends(funForEveryFriend: (String) -> Unit, afterDataLoaded: () -> Unit){
+    fun getMyFriends(funForEveryFriend: (User) -> Unit, afterDataLoaded: () -> Unit){
         db.collection("users").document(auth.currentUser?.uid.toString())
             .get()
             .addOnSuccessListener { user ->
                 val friends = user?.data?.get("friends") as ArrayList<DocumentReference>
                 for (friend in friends){
                     friend.get().addOnSuccessListener{ friend ->
-                        funForEveryFriend(friend?.data?.get("name").toString())
+                        funForEveryFriend(User(friend))
                         afterDataLoaded()
                     }
                     .addOnFailureListener{exception ->
@@ -150,5 +150,16 @@ class DatabaseHandler {
         db.collection("users").document(user.uid).set(data, SetOptions.merge())
             .addOnSuccessListener { sendNotificationToUser(0, user.uid) }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
+
+    fun getUser(funReference: (User) -> Unit, uid: String = auth.currentUser?.uid.toString()) {
+        db.collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { user ->
+                funReference(User(user))
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
     }
 }
