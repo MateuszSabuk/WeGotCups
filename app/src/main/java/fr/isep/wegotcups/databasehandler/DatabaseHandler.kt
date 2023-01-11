@@ -111,7 +111,7 @@ class DatabaseHandler {
     // TODO send a notification
     }
 
-    fun getMyFriends(funForEveryFriend: (String) -> Unit){
+    fun getMyFriends(funForEveryFriend: (String) -> Unit, afterDataLoaded: () -> Unit){
         db.collection("users").document(auth.currentUser?.uid.toString())
             .get()
             .addOnSuccessListener { user ->
@@ -119,6 +119,7 @@ class DatabaseHandler {
                 for (friend in friends){
                     friend.get().addOnSuccessListener{ friend ->
                         funForEveryFriend(friend?.data?.get("name").toString())
+                        afterDataLoaded()
                     }
                     .addOnFailureListener{exception ->
                         Log.w(TAG, "Error getting documents: ", exception)
