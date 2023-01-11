@@ -49,7 +49,7 @@ class FriendsActivity : AppCompatActivity() {
         if (user.userTag.toString() != "null"){
             userTag = user.userTag.toString()
         }
-        data.add(FriendsItemViewModel(getRandomAvatar(), user.name.toString(), userTag))
+        data.add(FriendsItemViewModel(getRandomAvatar(), user.name.toString(), userTag, "userid"))
     }
 
     private fun onListItemClick(position: Int) {
