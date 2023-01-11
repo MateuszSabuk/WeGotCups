@@ -20,7 +20,9 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         get() = FragmentEntryBinding::inflate
 
     override fun setup() {
-        binding.helloUsername.text = (activity as MainActivity).user?.displayName.toString()
+        updateUsername()
+        (activity as MainActivity).userUpdateFunctions.add(::updateUsername)
+
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(context)
 
         binding.newEvent.setOnClickListener(){
@@ -44,4 +46,9 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         adapter = EventsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         binding.eventRecyclerView.adapter = adapter
     }
+
+    private fun updateUsername(){
+        binding.helloUsername.text = (activity as MainActivity).user.name.toString()
+    }
+
 }

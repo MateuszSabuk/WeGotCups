@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityFriendsBinding
 import fr.isep.wegotcups.databasehandler.EventData
+import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 
@@ -33,13 +34,16 @@ class FriendsActivity : AppCompatActivity() {
         binding.friendRecyclerView.layoutManager = LinearLayoutManager(this)
         dbh.getMyFriends(::addFriendToData, ::loadDataToRecyclerView)
         //dbh.addFriend(UserID)
-        dbh.shareEventWithUser("W1mk3Z51yZq56j9oi4qj", "Kp2JJKspZMeBcPOfwKZwnxNJV5C2")
+        //dbh.shareEventWithUser("W1mk3Z51yZq56j9oi4qj", "Kp2JJKspZMeBcPOfwKZwnxNJV5C2")
     }
-    //TODO addFriends activity
+    // TODO addFriends activity
     // TODO recycler view for friends
-    fun addFriendToData(name: String){
-        Log.w(ContentValues.TAG, "friend: $name")
-        data.add(FriendsItemViewModel(getRandomAvatar(), name, "@username"))
+    fun addFriendToData(user: User){
+        var userTag = ""
+        if (user.userTag.toString() != "null"){
+            userTag = user.userTag.toString()
+        }
+        data.add(FriendsItemViewModel(getRandomAvatar(), user.name.toString(), userTag))
     }
 
     private fun onListItemClick(position: Int) {
