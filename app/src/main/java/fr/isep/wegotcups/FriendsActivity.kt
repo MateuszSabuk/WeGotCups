@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityFriendsBinding
-import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 
@@ -17,8 +17,6 @@ import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 class FriendsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFriendsBinding
-    public var newEventData: EventData = EventData()
-
     private val dbh: DatabaseHandler = DatabaseHandler()
     private var data = ArrayList<FriendsItemViewModel>()
     private lateinit var adapter: FriendsRecyclerViewAdapter
@@ -31,7 +29,13 @@ class FriendsActivity : AppCompatActivity() {
         binding = ActivityFriendsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.friendRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        binding.addFriendsButton.setOnClickListener {
+            startActivity(Intent(this, AddFriendActivity::class.java))
+        }
+
         dbh.getMyFriends(::addFriendToData, ::loadDataToRecyclerView)
+        println("Ahoj svet")
         //dbh.addFriend(UserID)
         dbh.shareEventWithUser("W1mk3Z51yZq56j9oi4qj", "Kp2JJKspZMeBcPOfwKZwnxNJV5C2")
     }
@@ -39,7 +43,8 @@ class FriendsActivity : AppCompatActivity() {
     // TODO recycler view for friends
     fun addFriendToData(name: String){
         Log.w(ContentValues.TAG, "friend: $name")
-        data.add(FriendsItemViewModel(getRandomAvatar(), name, "@username"))
+        //TODO
+        data.add(FriendsItemViewModel(getRandomAvatar(), name, "@username", "randomuserid"))
     }
 
     private fun onListItemClick(position: Int) {
@@ -47,8 +52,6 @@ class FriendsActivity : AppCompatActivity() {
     }
 
     private fun loadDataToRecyclerView(){
-        print("Hello world")
-        print(data)
         adapter = FriendsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         binding.friendRecyclerView.adapter = adapter
     }

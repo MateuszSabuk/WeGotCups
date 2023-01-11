@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".FriendsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +22,14 @@
             android:text="My friends">
 
         </com.google.android.material.textview.MaterialTextView>
+
+        <Button
+            android:id="@+id/add_friends_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add friends"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friend_recycler_view"

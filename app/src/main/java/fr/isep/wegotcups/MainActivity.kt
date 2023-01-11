@@ -15,6 +15,7 @@ import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 import fr.isep.wegotcups.notification.NotificationFragment
+import fr.isep.wegotcups.profile.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 

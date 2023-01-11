@@ -9,6 +9,7 @@ import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
+import fr.isep.wegotcups.home.EntryFragment
 
 class ModalBottomSheetPerson : BottomSheetDialogFragment() {
 
@@ -50,8 +51,8 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
             }
             false
         }
-//        binding.topPanel.setOnCreateContextMenuListener{
-//
-//        }
+        binding.toolBar.setNavigationOnClickListener(){
+            loadFragmentFromLeft(EntryFragment())
+        }
     }
 }

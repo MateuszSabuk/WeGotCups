@@ -1,4 +1,4 @@
-package fr.isep.wegotcups
+package fr.isep.wegotcups.profile
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.FriendsActivity
+import fr.isep.wegotcups.MainActivity
+import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databinding.FragmentProfileBinding
 import fr.isep.wegotcups.loginregister.AvatarFragment
-import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 
 
 class ProfileFragment : Fragment() {
@@ -60,7 +61,12 @@ class ProfileFragment : Fragment() {
 
     private  fun loadFragment(fragment: Fragment){
         val transaction = parentFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        transaction.setCustomAnimations(
+            R.anim.enter_from_left,
+            R.anim.exit_to_left,
+            R.anim.enter_from_left,
+            R.anim.exit_to_right
+        );
         transaction.replace(R.id.main_fragment_container,fragment)
         transaction.commit()
     }
