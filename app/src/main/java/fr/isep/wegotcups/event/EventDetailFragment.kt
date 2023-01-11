@@ -22,12 +22,13 @@ class ModalBottomSheetPerson : BottomSheetDialogFragment() {
     }
 }
 
-class EventDetailFragment : ViewBindingFragment<FragmentEventDetailBinding>() {
+class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragment<FragmentEventDetailBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEventDetailBinding
         get() = FragmentEventDetailBinding::inflate
 
-
     override fun setup() {
+        binding.eventName.title = event.name.toString()
+
         binding.addSection.setOnClickListener{
             showBottomSheetDialogFragment(AddSectionFragment())
         }

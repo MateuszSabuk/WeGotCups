@@ -2,6 +2,7 @@ package fr.isep.wegotcups.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
@@ -34,15 +35,11 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     }
 
     private fun onListItemClick(position: Int) {
-        loadFragment(EventDetailFragment())
+        loadFragment(EventDetailFragment(data[position].event))
     }
 
     private fun addEventToData(ed: EventData) {
-        data.add(EventItemViewModel(
-            R.drawable.event_cover,
-            ed.name.toString(),
-            ed.date.toString() + " " + ed.time.toString()
-        ))
+        data.add(EventItemViewModel(ed))
     }
 
     private fun loadRecyclerAdapter() {
