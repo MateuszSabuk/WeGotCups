@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
 
 class ModalBottomSheetPerson : BottomSheetDialogFragment() {
@@ -22,12 +23,13 @@ class ModalBottomSheetPerson : BottomSheetDialogFragment() {
     }
 }
 
-class EventDetailFragment : ViewBindingFragment<FragmentEventDetailBinding>() {
+class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragment<FragmentEventDetailBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEventDetailBinding
         get() = FragmentEventDetailBinding::inflate
 
-
     override fun setup() {
+        binding.eventName.title = event.name.toString()
+
         binding.addSection.setOnClickListener{
             showBottomSheetDialogFragment(AddSectionFragment())
         }

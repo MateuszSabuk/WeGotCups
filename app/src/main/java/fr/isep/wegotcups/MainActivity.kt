@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fr.isep.wegotcups.databinding.ActivityMainBinding
-import fr.isep.wegotcups.event.EventData
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.loginregister.LoginRegisterActivity

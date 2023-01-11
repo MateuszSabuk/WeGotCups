@@ -9,8 +9,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import fr.isep.wegotcups.event.EventData
-import java.util.ArrayList
+import java.util.*
 
 class DatabaseHandler {
     private val db = Firebase.firestore
@@ -35,7 +34,7 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun getMyEvents(funForEveryEvent: (EventData) -> Unit,afterEventsLoaded: () -> Unit) {
+    fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit) {
         val currentUserReference: DocumentReference = db.document("/users/${auth.currentUser?.uid}")
         db.collection("events")
             .whereEqualTo("owner", auth.currentUser?.uid)
@@ -76,7 +75,7 @@ class DatabaseHandler {
                         .update("sharedWith", FieldValue.arrayUnion(docRef))
                         .addOnSuccessListener {
                             Log.d(TAG, "Friend successfully added!")
-                            sendNotificationToUser(uid)
+                            sendNotificationToUser(2, uid)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 } else {
@@ -96,7 +95,7 @@ class DatabaseHandler {
                         .update("friends", FieldValue.arrayUnion(docRef))
                         .addOnSuccessListener {
                             Log.d(TAG, "Friend successfully added!")
-                            sendNotificationToUser(uid)
+                            sendNotificationToUser(1, uid)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 } else {
@@ -107,8 +106,19 @@ class DatabaseHandler {
 
     }
 
-    fun sendNotificationToUser(uid:String){
-    // TODO send a notification
+    fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString()) {
+        val notification = hashMapOf(
+            "from" to from,
+            "to" to uid,
+            "type" to type,
+            "time" to Date(),
+        )
+        db.collection("notifications")
+            .add(notification)
+            .addOnSuccessListener {
+                Log.d(TAG, "Notification sent!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error sending notification", e) }
     }
 
     fun getMyFriends(funForEveryFriend: (String) -> Unit, afterDataLoaded: () -> Unit){
@@ -138,7 +148,7 @@ class DatabaseHandler {
             "email" to user.email.toString(),
         )
         db.collection("users").document(user.uid).set(data, SetOptions.merge())
-            .addOnSuccessListener { Log.d(TAG, "Event successfully written!") }
+            .addOnSuccessListener { sendNotificationToUser(0, user.uid) }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 }

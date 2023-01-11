@@ -6,7 +6,7 @@ import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentDoneEventBinding
-import fr.isep.wegotcups.event.EventData
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.home.EntryFragment
 
 

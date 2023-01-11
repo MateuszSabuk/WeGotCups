@@ -1,6 +1,7 @@
 package fr.isep.wegotcups
 
 import android.content.ContentValues
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,14 +9,17 @@ import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityFriendsBinding
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.event.EventData
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 
 
 class FriendsActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityFriendsBinding
     public var newEventData: EventData = EventData()
+
     private val dbh: DatabaseHandler = DatabaseHandler()
     private var data = ArrayList<FriendsItemViewModel>()
     private lateinit var adapter: FriendsRecyclerViewAdapter
