@@ -36,6 +36,7 @@ class FriendsActivity : AppCompatActivity() {
 
         dbh.getMyFriends(::temp)
         //dbh.addFriend(UserID)
+        dbh.shareEventWithUser("W1mk3Z51yZq56j9oi4qj", "Kp2JJKspZMeBcPOfwKZwnxNJV5C2")
     }
     //TODO addFriends activity
     // TODO recycler view for friends

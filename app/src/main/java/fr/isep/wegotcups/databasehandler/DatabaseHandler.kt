@@ -61,8 +61,29 @@ class DatabaseHandler {
             }
     }
 
-    fun shareEventWithUser(event:EventData, uid:String){
-
+    // Event ID
+    // User ID
+    fun shareEventWithUser(eid: String, uid:String){
+        if(uid == auth.currentUser?.uid.toString()){
+            Log.w(TAG, "Don't share with self!")
+            return
+        }
+        val docRef: DocumentReference = db.document("/users/$uid")
+        docRef.get()
+            .addOnSuccessListener { user ->
+                if (user.exists()){
+                    db.collection("events").document(eid)
+                        .update("sharedWith", FieldValue.arrayUnion(docRef))
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Friend successfully added!")
+                            sendNotificationToUser(uid)
+                        }
+                        .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                } else {
+                    Log.w(TAG, "User does not exist!")
+                }
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error looking for the document", e) }
     }
 
 
@@ -75,15 +96,19 @@ class DatabaseHandler {
                         .update("friends", FieldValue.arrayUnion(docRef))
                         .addOnSuccessListener {
                             Log.d(TAG, "Friend successfully added!")
-                            // TODO Send notification to the person
+                            sendNotificationToUser(uid)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 } else {
-                    Log.d(TAG, "User does not exist!")
+                    Log.w(TAG, "User does not exist!")
                 }
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error looking for the document", e) }
 
+    }
+
+    fun sendNotificationToUser(uid:String){
+    // TODO send a notification
     }
 
     fun getMyFriends(funForEveryFriend: (String) -> Unit){
