@@ -12,12 +12,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import fr.isep.wegotcups.MainActivity
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityLoginregisterBinding
 
 class LoginRegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginregisterBinding
     private lateinit var auth: FirebaseAuth
+    private val dbh: DatabaseHandler = DatabaseHandler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -60,6 +62,7 @@ class LoginRegisterActivity : AppCompatActivity() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d(TAG, "Username added")
+                                dbh.createUser(user)
                                 updateUI(user)
                             }
                         }

@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/temp_text"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Hello There">
