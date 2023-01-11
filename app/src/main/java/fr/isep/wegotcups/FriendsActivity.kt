@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityFriendsBinding
 import fr.isep.wegotcups.databasehandler.EventData
-import fr.isep.wegotcups.event.EventData
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 
