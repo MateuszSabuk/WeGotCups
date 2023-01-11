@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
 
 class ModalBottomSheetPerson : BottomSheetDialogFragment() {

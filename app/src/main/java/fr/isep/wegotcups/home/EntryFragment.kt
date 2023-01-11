@@ -2,14 +2,12 @@ package fr.isep.wegotcups.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.MainActivity
-import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentEntryBinding
-import fr.isep.wegotcups.event.EventData
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.newevent.NameEventFragment
 

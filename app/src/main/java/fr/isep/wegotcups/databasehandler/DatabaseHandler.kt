@@ -9,7 +9,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import fr.isep.wegotcups.event.EventData
 import java.util.*
 
 class DatabaseHandler {
@@ -35,7 +34,7 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun getMyEvents(funForEveryEvent: (EventData) -> Unit,afterEventsLoaded: () -> Unit) {
+    fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit) {
         val currentUserReference: DocumentReference = db.document("/users/${auth.currentUser?.uid}")
         db.collection("events")
             .whereEqualTo("owner", auth.currentUser?.uid)

@@ -1,24 +1,13 @@
 package fr.isep.wegotcups
 
 import android.content.ContentValues
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.view.WindowCompat
-import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.ActivityFriendsBinding
-import fr.isep.wegotcups.databinding.ActivityMainBinding
-import fr.isep.wegotcups.event.EventData
-import fr.isep.wegotcups.event.EventDetailFragment
-import fr.isep.wegotcups.home.EntryFragment
-import fr.isep.wegotcups.loginregister.LoginRegisterActivity
-import fr.isep.wegotcups.notification.NotificationFragment
+import fr.isep.wegotcups.databasehandler.EventData
 
 class FriendsActivity : AppCompatActivity() {
 

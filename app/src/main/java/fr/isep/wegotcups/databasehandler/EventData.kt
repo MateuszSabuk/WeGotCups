@@ -1,4 +1,4 @@
-package fr.isep.wegotcups.event
+package fr.isep.wegotcups.databasehandler
 
 import android.content.ContentValues
 import android.net.Uri
@@ -13,7 +13,6 @@ class EventData {
         name = document?.data?.get("name").toString()
         date = document?.data?.get("date").toString()
         time = document?.data?.get("time").toString()
-        Log.d(ContentValues.TAG, document?.data.toString())
     }
 
     var id: String? = null
