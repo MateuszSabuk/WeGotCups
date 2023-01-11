@@ -86,9 +86,10 @@
     <string name="events">Events</string>
     <string name="wegotcups">WeGotCups</string>
     <string name="email">Email</string>
-    <string name="edit_picture_or_avatar">Edit picture or avatar</string>
+    <string name="edit_picture_or_avatar">Edit profile data</string>
     <string name="add_person_to_the_event">Add person to the event</string>
     <string name="add_person">Add person</string>
     <string name="add_task">Add task</string>
     <string name="my_friends">My friends</string>
+    <string name="username">Username</string>
 </resources>
