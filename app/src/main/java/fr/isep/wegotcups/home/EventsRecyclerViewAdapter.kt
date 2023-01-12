@@ -1,17 +1,21 @@
 package fr.isep.wegotcups.home
 
 import android.content.ContentValues.TAG
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 
 class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
+    val dbh = DatabaseHandler()
 
     lateinit var parent: ViewGroup
 
@@ -29,7 +33,7 @@ class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, pri
             holder.imageView.setImageResource(itemsViewModel.image)
         } else {
             DownloadAndSaveImageTask(parent.context).execute(Pair(itemsViewModel.imageUri.toString(), holder.imageView))
-            holder.imageView.setImageURI(itemsViewModel.event.getLocalUri())
+            holder.imageView.setImageURI(dbh.localUriFromUri(itemsViewModel.imageUri as Uri))
         }
         holder.textName.text = itemsViewModel.name
         holder.textDateAndTime.text = itemsViewModel.dateAndTime

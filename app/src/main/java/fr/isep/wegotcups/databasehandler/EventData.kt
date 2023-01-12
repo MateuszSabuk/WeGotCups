@@ -3,23 +3,20 @@ package fr.isep.wegotcups.databasehandler
 import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import java.util.*
 
 class EventData {
-    fun getLocalUri(): Uri? {
-        val names = imageUri?.toString()?.split('/')?.last()?.split('?')?.first()?.split("%2F")
-        return Uri.parse("/data/data/fr.isep.wegotcups/files/${names?.get(0) as String}/${names?.get(1) as String}")
-    }
-
     constructor()
 
     constructor(document: QueryDocumentSnapshot?){
         id = document?.id.toString()
         name = document?.data?.get("name").toString()
         datetime = document?.data?.get("datetime") as Timestamp
-        imageUri = Uri.parse(document?.data?.get("imageUri").toString())
+        imageUri = (document?.data?.get("imageUri").toString()).toUri()
+        if (imageUri == "null".toUri()) imageUri = null
         dresscode = document?.data?.get("dresscode").toString()
         description = document?.data?.get("description").toString()
     }
