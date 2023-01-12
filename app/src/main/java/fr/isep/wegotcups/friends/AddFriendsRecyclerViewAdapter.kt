@@ -25,9 +25,8 @@ class AddFriendsRecyclerViewAdapter (private val mList: List<FriendsItemViewMode
         holder.buttonAddFriend.setOnClickListener(){
             //TODO addFriend function
             println("Add user with id: " + ItemsViewModel.userId)
-            holder.buttonAddFriend.text = "Friend added"
+            holder.buttonAddFriend.text = "Added"
             holder.buttonAddFriend.isEnabled = false
-//            Toast.makeText(getContext(), "Hello", Toast.LENGTH_LONG).show()
         }
     }
 

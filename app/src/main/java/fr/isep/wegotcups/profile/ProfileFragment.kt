@@ -70,6 +70,7 @@ class ProfileFragment : Fragment() {
             R.anim.exit_to_right
         );
         transaction.replace(R.id.main_fragment_container,fragment)
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 
