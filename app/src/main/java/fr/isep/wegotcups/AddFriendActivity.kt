@@ -31,6 +31,7 @@ class AddFriendActivity : AppCompatActivity() {
 
     }
 
+    //TODO - remove
     private fun getRandomAvatar(): Int {
         val rnds = (0..7).random()
         when(rnds){
