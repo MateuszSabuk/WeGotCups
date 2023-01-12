@@ -1,14 +1,21 @@
 package fr.isep.wegotcups.databasehandler
 
 import android.content.ContentValues.TAG
+import android.net.Uri
 import android.util.Log
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import fr.isep.wegotcups.MainActivity
 import java.util.*
 
 class DatabaseHandler {
@@ -160,5 +167,22 @@ class DatabaseHandler {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
+    }
+
+    fun addPhoto(uri: Uri, folder: String, returnFun: (Uri) -> Unit) {
+        val fileName = UUID.randomUUID().toString() +".jpg"
+
+        val refStorage = FirebaseStorage.getInstance().reference.child("$folder/$fileName")
+
+        refStorage.putFile(uri)
+            .addOnSuccessListener(
+                OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+                        returnFun(it)
+                    }
+                })
+            .addOnFailureListener(OnFailureListener { e ->
+                print(e.message)
+            })
     }
 }
