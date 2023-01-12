@@ -82,7 +82,7 @@ class ProfileFragment : Fragment() {
         binding.emailText.text = user.email.toString()
         var userTag = ""
         if (user.userTag.toString() != "null"){
-            userTag = user.userTag.toString()
+            userTag = "@${user.userTag.toString()}"
         }
         binding.profileFragmentUsername.text = userTag
     }

@@ -1,9 +1,11 @@
 package fr.isep.wegotcups.loginregister
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import fr.isep.wegotcups.MainActivity
@@ -30,6 +32,13 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
         user = (activity as MainActivity).user
         chosenLocalAvatar = user.numOfAvatar
         user.getProfilePicture(binding.avatarFragmentImage)
+
+        binding.username.editText?.setText(user.name.toString())
+        var userTag = ""
+        if (user.userTag.toString() != "null"){
+            userTag = user.userTag.toString()
+        }
+        binding.userTag.editText?.setText(userTag)
 
         binding.avatarFox.setOnClickListener{
             chosenLocalAvatar = 0
@@ -68,14 +77,8 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
             startActivityForResult(gallery, pickImage)
         }
         binding.doneButton.setOnClickListener {
-            if (chosenLocalAvatar == null){
-                user.avatarLocal = false
-                // TODO send image to database
-            } else {
-                user.numOfAvatar = chosenLocalAvatar as Int
-            }
-            dbh.updateUser(user)
-            (activity as MainActivity).supportFragmentManager.popBackStack()
+            inputValidation()
+            //If fine then goes back to profile fragment
         }
     }
 
@@ -87,6 +90,37 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
             binding.avatarFragmentImage.setImageURI(imageUri)
             chosenLocalAvatar = null
         }
+    }
+
+    private fun inputValidation(){
+        var name = binding.username.editText?.text
+        var tag = binding.userTag.editText?.text
+
+        if (name.isNullOrEmpty() or name.isNullOrBlank() or tag.isNullOrEmpty() or tag.isNullOrBlank()) {
+            return
+        }
+        user.name = name.toString()
+        for (character in "!@#$%^&*()=+[]{}\"':;/?>,<"){
+            if(tag.toString().contains(character)) return
+        }
+        dbh.tagExists(tag.toString(),::validationAfterTagCheck)
+    }
+
+    private fun validationAfterTagCheck(ok: Boolean, tag: String){
+        if (!ok) {
+            return
+        }
+        user.userTag = tag
+        if (chosenLocalAvatar == null){
+            user.avatarLocal = false
+            // TODO send image to database
+        } else {
+            user.numOfAvatar = chosenLocalAvatar as Int
+        }
+        dbh.updateUser(user)
+
+        // TODO Navigation is a mess
+        (activity as MainActivity).supportFragmentManager.popBackStack()
     }
 
 }

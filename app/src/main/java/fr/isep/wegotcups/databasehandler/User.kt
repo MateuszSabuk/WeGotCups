@@ -19,7 +19,10 @@ class User {
         id = document?.id.toString()
         name = document?.data?.get("name").toString()
         friends = document?.data?.get("friends") as ArrayList<DocumentReference>
-        userTag = document?.data?.get("userTag").toString()
+        val ut = document?.data?.get("userTag")
+        if (ut != null){
+            userTag = ut.toString()
+        }
         email = document?.data?.get("email").toString()
         val al = document?.data?.get("avatarLocal")
         if (al is Boolean){
