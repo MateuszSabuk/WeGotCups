@@ -19,6 +19,7 @@ import kotlin.collections.ArrayList
 
 class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     private var data = ArrayList<EventItemViewModel>()
+    private var filtered = listOf<EventItemViewModel>()
     private val dbh = DatabaseHandler()
     private lateinit var adapter: EventsRecyclerViewAdapter
 
@@ -26,6 +27,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         get() = FragmentEntryBinding::inflate
 
     override fun setup() {
+        data = ArrayList()
         updateUsername()
         (activity as MainActivity).userUpdateFunctions.add(::updateUsername)
 
@@ -39,28 +41,38 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
             loadRecyclerAdapter()
         }
 
+
         //TODO make loading smoother
 
         dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter)
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun onListItemClick(position: Int) {
-        loadFragment(EventDetailFragment(data[position].event))
+        if (binding.showOldSwitch.isChecked) {
+            loadFragment(EventDetailFragment(filtered[position].event))
+        }else{
+            loadFragment(EventDetailFragment(data[position].event))
+        }
     }
 
     private fun addEventToData(ed: EventData) {
         data.add(EventItemViewModel(ed))
+        data.sortWith(
+            compareBy { it.event.datetime }
+        )
+        filtered = data.filter { it.event.datetime > Timestamp(Date()) }
     }
 
     private fun loadRecyclerAdapter() {
-        var sorted = data.sortedWith(
-            compareBy { it.event.datetime }
-        )
-        var filtered = sorted
-        if (!binding.showOldSwitch.isChecked){
-            filtered = filtered.filter { it.event.datetime > Timestamp(Date()) }
+        adapter = if (binding.showOldSwitch.isChecked) {
+            EventsRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
+        }else{
+            EventsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         }
-        adapter = EventsRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
         binding.eventRecyclerView.adapter = adapter
     }
 
