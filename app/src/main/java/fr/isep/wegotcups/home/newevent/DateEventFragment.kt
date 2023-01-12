@@ -1,13 +1,16 @@
 package fr.isep.wegotcups.home.newevent
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.Timestamp
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databinding.FragmentDateEventBinding
@@ -16,10 +19,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
+    private var date: String = ""
+    private var time: String = ""
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDateEventBinding
             = FragmentDateEventBinding::inflate
 
     override fun setup() {
+        val event = (activity as MainActivity).newEventData
+
         binding.selectDate.setOnClickListener{
             openDatePicker()
         }
@@ -29,14 +37,19 @@ class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
         }
 
         binding.nextButton.setOnClickListener(){
-            //TODO validate the inputs
-            (activity as MainActivity).newEventData.date = binding.date.hint.toString()
-            (activity as MainActivity).newEventData.time = binding.time.hint.toString()
+            if (date.isEmpty()){
+                return@setOnClickListener
+            }
+            if (time.isEmpty()){
+                time = "0:0"
+            }
+            Log.d(TAG,"$date $time")
+            event.datetime = Timestamp(Date("$date $time"))
+
             loadFragment(LocationEventFragment())
         }
 
         binding.backButton.setOnClickListener(){
-            //TODO
             loadFragmentFromLeft(NameEventFragment())
         }
     }
@@ -49,10 +62,13 @@ class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
 
         datePicker.show(childFragmentManager, "TAG")
         datePicker.addOnPositiveButtonClickListener {
-            val simpleDateFormat = SimpleDateFormat("dd/MMMM/yyyy",Locale.getDefault())
-            val date = simpleDateFormat.format(Date(it).time)
+            val dateFormat = SimpleDateFormat("MM/dd/yyyy",Locale.getDefault())
+            date = dateFormat.format(Date(it).time)
 
-            binding.date.hint = date
+            val displayDateFormat = SimpleDateFormat("dd/MMMM/yyyy",Locale.getDefault())
+            val displayDate = displayDateFormat.format(Date(it).time)
+
+            binding.date.hint = displayDate
         }
 
     }
@@ -73,7 +89,8 @@ class DateEventFragment : ViewBindingFragment<FragmentDateEventBinding>() {
             val hour = timePicker.hour
             val minutes = timePicker.minute
 
-            binding.time.hint = hour.toString() + ":" + minutes.toString()
+            time = "$hour:$minutes"
+            binding.time.hint = time
         }
     }
 }

@@ -3,7 +3,9 @@ package fr.isep.wegotcups.databasehandler
 import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import java.util.*
 
 class EventData {
     constructor()
@@ -11,14 +13,12 @@ class EventData {
     constructor(document: QueryDocumentSnapshot?){
         id = document?.id.toString()
         name = document?.data?.get("name").toString()
-        date = document?.data?.get("date").toString()
-        time = document?.data?.get("time").toString()
+        datetime = document?.data?.get("datetime") as Timestamp
     }
 
     var id: String? = null
     var name: String? = null
-    var date: String? = null
-    var time: String? = null
+    var datetime: Timestamp = Timestamp(Date(0))
     var location: String? = null
     var imageUri: Uri? = null
     var dresscode: String? = null

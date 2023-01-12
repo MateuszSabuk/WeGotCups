@@ -19,8 +19,7 @@ class DatabaseHandler {
         val event = hashMapOf(
             "name" to eventData?.name.toString(),
             "owner" to auth.currentUser?.uid,
-            "date" to eventData?.date.toString(),
-            "time" to eventData?.time.toString(),
+            "datetime" to eventData?.datetime,
             "location" to eventData?.location.toString(),
             //TODO set image uri
             "imageUri" to eventData?.imageUri.toString(),

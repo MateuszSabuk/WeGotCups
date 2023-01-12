@@ -13,16 +13,17 @@ class NameEventFragment: ViewBindingFragment<FragmentNameEvenBinding>() {
             = FragmentNameEvenBinding::inflate
 
     override fun setup() {
-        binding.nextButton.setOnClickListener {
-            //TODO validate name input
+        val event = (activity as MainActivity).newEventData
 
-            Log.v("the child is: ", activity.toString());
-            (activity as MainActivity).newEventData.name = binding.nameInput.editText?.text.toString()
-            loadFragment(DateEventFragment())
+        binding.nextButton.setOnClickListener {
+            val text = binding.nameInput.editText?.text.toString()
+            if (text.isNotBlank() and text.isNotEmpty()) {
+                event.name = text
+                loadFragment(DateEventFragment())
+            }
         }
 
         binding.cancelButton.setOnClickListener{
-            //TODO
             loadFragmentFromLeft(EntryFragment())
         }
     }
