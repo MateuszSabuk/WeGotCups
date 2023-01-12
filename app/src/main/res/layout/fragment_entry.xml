@@ -72,6 +72,16 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/avatar_image"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/show_old_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="Show old"
+            app:layout_constraintBottom_toTopOf="@+id/event_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
