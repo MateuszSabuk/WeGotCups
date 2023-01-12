@@ -52,10 +52,10 @@ class DownloadAndSaveImageTask(val context: Context) : AsyncTask<Pair<String, Im
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
                 out.flush()
                 out.close()
-                Log.i("Seiggailion", "Image saved.")
+                Log.i("Glide", "Image saved.")
                 result = true
             } catch (e: Exception) {
-                Log.i("Seiggailion", "Failed to save image.")
+                Log.i("Glide", "Failed to save image.")
             }
         }
         if (result){

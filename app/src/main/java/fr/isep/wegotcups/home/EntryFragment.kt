@@ -12,6 +12,7 @@ import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databinding.FragmentEntryBinding
 import fr.isep.wegotcups.databasehandler.EventData
+import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.newevent.NameEventFragment
 import java.util.*
@@ -21,6 +22,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     private var data = ArrayList<EventItemViewModel>()
     private var filtered = listOf<EventItemViewModel>()
     private val dbh = DatabaseHandler()
+    private lateinit var user: User
     private lateinit var adapter: EventsRecyclerViewAdapter
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEntryBinding
@@ -28,8 +30,9 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
 
     override fun setup() {
         data = ArrayList()
-        updateUsername()
-        (activity as MainActivity).userUpdateFunctions.add(::updateUsername)
+
+        updateUsernameAndAvatar()
+        (activity as MainActivity).userUpdateFunctions.add(::updateUsernameAndAvatar)
 
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -76,8 +79,9 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         binding.eventRecyclerView.adapter = adapter
     }
 
-    private fun updateUsername(){
+    private fun updateUsernameAndAvatar(){
         binding.helloUsername.text = (activity as MainActivity).user.name.toString()
+        (activity as MainActivity).user.getProfilePicture(binding.imageView)
     }
 
 }

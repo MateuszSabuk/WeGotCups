@@ -152,6 +152,8 @@ class DatabaseHandler {
             "name" to user.displayName.toString(),
             "friends" to arrayListOf<DocumentReference>(),
             "email" to user.email.toString(),
+            "avatarLocal" to true,
+            "numOfAvatar" to (0..7).random()
         )
         db.collection("users").document(user.uid).set(data, SetOptions.merge())
             .addOnSuccessListener { sendNotificationToUser(0, user.uid) }
@@ -167,6 +169,16 @@ class DatabaseHandler {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
+    }
+
+    fun updateUser(user: User){
+        if (user.id != auth.currentUser?.uid || user.id == null) return
+        db.collection("users").document(user.id.toString())
+            .update(user.toHashMap())
+            .addOnSuccessListener {
+                Log.d(TAG, "Updated user!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
     fun addPhoto(uri: Uri, folder: String, returnFun: (Uri) -> Unit) {

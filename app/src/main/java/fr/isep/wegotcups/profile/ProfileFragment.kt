@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 import fr.isep.wegotcups.FriendsActivity
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.FragmentProfileBinding
 import fr.isep.wegotcups.loginregister.AvatarFragment
 
@@ -18,7 +19,7 @@ import fr.isep.wegotcups.loginregister.AvatarFragment
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-    private lateinit var user: FirebaseUser
+    lateinit var user: User
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,7 +29,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        user = FirebaseAuth.getInstance().currentUser!!
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
         // TODO MATEUSZ add Image from database to picture
@@ -36,6 +36,9 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        user = (activity as MainActivity).user
+        user.getProfilePicture(binding.profileFragmentImage)
 
         updateUsername()
         (activity as MainActivity).userUpdateFunctions.add(::updateUsername)
@@ -75,7 +78,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateUsername(){
-        val user = (activity as MainActivity).user
         binding.profileFragmentName.text = user.name.toString()
         binding.emailText.text = user.email.toString()
         var userTag = ""
