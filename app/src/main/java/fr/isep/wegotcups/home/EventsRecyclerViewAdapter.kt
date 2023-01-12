@@ -1,5 +1,7 @@
 package fr.isep.wegotcups.home
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 
 class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    lateinit var parent: ViewGroup
+
+    override fun onCreateViewHolder(_parent: ViewGroup, viewType: Int): ViewHolder {
+        parent = _parent
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_event_view, parent, false)
 
@@ -18,10 +24,15 @@ class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, pri
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ItemsViewModel = mList[position]
-        holder.imageView.setImageResource(ItemsViewModel.image)
-        holder.textName.text = ItemsViewModel.name
-        holder.textDateAndTime.text = ItemsViewModel.dateAndTime
+        val itemsViewModel = mList[position]
+        if (itemsViewModel.imageUri == null){
+            holder.imageView.setImageResource(itemsViewModel.image)
+        } else {
+            DownloadAndSaveImageTask(parent.context).execute(Pair(itemsViewModel.imageUri.toString(), holder.imageView))
+            holder.imageView.setImageURI(itemsViewModel.event.getLocalUri())
+        }
+        holder.textName.text = itemsViewModel.name
+        holder.textDateAndTime.text = itemsViewModel.dateAndTime
     }
 
     override fun getItemCount(): Int {
@@ -43,7 +54,5 @@ class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, pri
             onItemClicked(position)
         }
     }
-
-    //TODO Update adapter
 
 }

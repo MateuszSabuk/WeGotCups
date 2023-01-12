@@ -15,6 +15,7 @@ import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.event.EventDetailFragment
 import fr.isep.wegotcups.home.EntryFragment
+import fr.isep.wegotcups.loginregister.AvatarFragment
 import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 import fr.isep.wegotcups.notification.NotificationFragment
 import fr.isep.wegotcups.profile.ProfileFragment

@@ -2,6 +2,7 @@ package fr.isep.wegotcups.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.ViewBindingFragment
