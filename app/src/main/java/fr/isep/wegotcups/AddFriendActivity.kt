@@ -29,7 +29,7 @@ class AddFriendActivity : AppCompatActivity() {
         binding.addFriendsRecyclerView.layoutManager = LinearLayoutManager(this)
 
 
-        dbh.getMyNotFriends(::addUserToData,::loadDataToRecyclerView)
+        dbh.getMyFriends(::addUserToData,::loadDataToRecyclerView, true)
 
         for (i in 1..10) {
 

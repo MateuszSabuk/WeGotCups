@@ -17,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import fr.isep.wegotcups.MainActivity
 import java.util.*
+import kotlin.collections.ArrayList
 
 class DatabaseHandler {
     private val db = Firebase.firestore
@@ -28,17 +29,10 @@ class DatabaseHandler {
         var staticVariablesStarted: Boolean = false
     }
     init {
-        if(staticVariablesStarted){
-            getMyFriends(::temp,::temp)
+        if(!staticVariablesStarted){
             getUser(::initMe)
             staticVariablesStarted = true
         }
-    }
-    private fun temp() {
-        Log.d(TAG,"temp bez niczego")
-    }
-    private fun temp(user:User) {
-        Log.d(TAG,"temp dla uzytkownika")
     }
     private fun initMe (user: User){
         me = user
@@ -125,7 +119,7 @@ class DatabaseHandler {
                         .addOnSuccessListener {
                             Log.d(TAG, "Friend successfully added!")
                             sendNotificationToUser(1, uid)
-                            myFriendList.add(uid)
+                            getUser(::initMe)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 } else {
@@ -150,38 +144,23 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error sending notification", e) }
     }
 
-    fun getMyFriends(funForEveryFriend: (User) -> Unit, afterDataLoaded: () -> Unit){
-        db.collection("users").document(auth.currentUser?.uid.toString())
-            .get()
-            .addOnSuccessListener { user ->
-                val friends = user?.data?.get("friends") as ArrayList<DocumentReference>
-                for (friend in friends){
-                    friend.get().addOnSuccessListener{ friend ->
-                        var usr = User(friend)
-                        if (usr.id != null){
-                            myFriendList.add(usr.id.toString())
-                        }
-                        funForEveryFriend(usr)
-                        afterDataLoaded()
-                    }
-                    .addOnFailureListener{exception ->
-                        Log.w(TAG, "Error getting documents: ", exception)
-                    }
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-            }
-    }
-
-    fun getMyNotFriends(funForEveryUser: (User) -> Unit, afterDataLoaded: () -> Unit){
+    fun getMyFriends(funForEveryUser: (User) -> Unit, afterDataLoaded: () -> Unit, invert: Boolean = false){
+        var isFriend:Boolean
         db.collection("users")
             .get()
             .addOnSuccessListener { users ->
-                for (u in users){
-                    var user = User(u)
-                    if (user.id.toString() !in myFriendList){
-                        funForEveryUser(user)
+                if (me.friends != null){
+                    for (user in users) {
+                        isFriend = false
+                        for (friend in (me.friends as ArrayList)) {
+                            if (user.id == friend.id){
+                                isFriend = true
+                            }
+                        }
+                        Log.d(TAG, user.data["name"].toString() + " " + isFriend)
+                        if ((isFriend && !invert)||(!isFriend && invert)){
+                            funForEveryUser(User(user))
+                        }
                     }
                 }
                 afterDataLoaded()

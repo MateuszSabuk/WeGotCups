@@ -50,7 +50,6 @@ class ModalBottomSheetPerson(var event: EventData) : BottomSheetDialogFragment()
     }
 
     private fun addFriendToData(user: User){
-        event.name = "HAHAHAH"
         data.add(FriendsItemViewModel(user, event))
     }
 
