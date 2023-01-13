@@ -1,5 +1,7 @@
 package fr.isep.wegotcups.event
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -64,6 +66,8 @@ class ModalBottomSheetPerson(var event: EventData) : BottomSheetDialogFragment()
 }
 
 class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragment<FragmentEventDetailBinding>() {
+    private var spotifyUrl: String? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEventDetailBinding
         get() = FragmentEventDetailBinding::inflate
 
@@ -93,5 +97,22 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         binding.toolBar.setNavigationOnClickListener(){
             loadFragmentFromLeft(EntryFragment())
         }
+
+        spotifyUrl = loadSpotifyUrl()
+        if(spotifyUrl.isNullOrBlank()){
+           binding.playlistCard.visibility = View.GONE
+        }else{
+            binding.openSpotify.setOnClickListener(){
+                val uri: Uri = Uri.parse(spotifyUrl) // missing 'http://' will cause crashed
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+        }
+
+    }
+
+    //TODO - make loading of data from the db
+    private fun loadSpotifyUrl():String?{
+        return "https://open.spotify.com/playlist/15sBiFlWRq2MuTeq4Q7Sb3?si=fSGtjKjOTR2Ox0p5Hr0_fw&pt=ffc09e7a3b7e3629324d29b48b60b911"
     }
 }

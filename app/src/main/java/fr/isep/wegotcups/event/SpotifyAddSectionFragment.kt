@@ -1,5 +1,6 @@
 package fr.isep.wegotcups.event
 
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import fr.isep.wegotcups.ViewBindingBottomSheetFragment
@@ -10,8 +11,16 @@ class SpotifyAddSectionFragment : ViewBindingBottomSheetFragment<FragmentSpotify
         get() = FragmentSpotifyAddSectionBinding::inflate
 
     override fun setup() {
-        //TODO
-        println("Todo")
+        binding.cancelButton.setOnClickListener(){
+            this.dialog?.hide()
+        }
+
+        binding.doneButton.setOnClickListener(){
+            //TODO - save data to the db
+            this.dialog?.hide()
+        }
+
+        binding.moreSpotify.movementMethod = LinkMovementMethod.getInstance()
     }
 
 }
