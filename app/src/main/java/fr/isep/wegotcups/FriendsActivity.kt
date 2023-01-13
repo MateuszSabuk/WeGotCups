@@ -38,18 +38,20 @@ class FriendsActivity : AppCompatActivity() {
             startActivity(Intent(this, AddFriendActivity::class.java))
         }
 
-        dbh.getMyFriends(::addFriendToData, ::loadDataToRecyclerView)
-        //dbh.addFriend(UserID)
-        dbh.shareEventWithUser("W1mk3Z51yZq56j9oi4qj", "Kp2JJKspZMeBcPOfwKZwnxNJV5C2")
     }
-    //TODO addFriends activity
-    // TODO recycler view for friends
-    fun addFriendToData(user: User){
+
+    override fun onResume() {
+        super.onResume()
+        data = ArrayList()
+        dbh.getMyFriends(::addFriendToData, ::loadDataToRecyclerView)
+    }
+
+    private fun addFriendToData(user: User){
         var userTag = ""
         if (user.userTag.toString() != "null"){
             userTag = user.userTag.toString()
         }
-        data.add(FriendsItemViewModel(getRandomAvatar(), user.name.toString(), userTag, "userid"))
+        data.add(FriendsItemViewModel(user))
     }
 
     private fun onListItemClick(position: Int) {

@@ -22,6 +22,29 @@ class DatabaseHandler {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
 
+    companion object {
+        lateinit var me: User
+        var myFriendList = mutableSetOf<String>()
+        var staticVariablesStarted: Boolean = false
+    }
+    init {
+        if(staticVariablesStarted){
+            getMyFriends(::temp,::temp)
+            getUser(::initMe)
+            staticVariablesStarted = true
+        }
+    }
+    private fun temp() {
+        Log.d(TAG,"temp bez niczego")
+    }
+    private fun temp(user:User) {
+        Log.d(TAG,"temp dla uzytkownika")
+    }
+    private fun initMe (user: User){
+        me = user
+    }
+
+
     fun addEvent(eventData: EventData?){
         val event = hashMapOf(
             "name" to eventData?.name.toString(),
@@ -102,6 +125,7 @@ class DatabaseHandler {
                         .addOnSuccessListener {
                             Log.d(TAG, "Friend successfully added!")
                             sendNotificationToUser(1, uid)
+                            myFriendList.add(uid)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 } else {
@@ -109,7 +133,6 @@ class DatabaseHandler {
                 }
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error looking for the document", e) }
-
     }
 
     fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString()) {
@@ -134,13 +157,48 @@ class DatabaseHandler {
                 val friends = user?.data?.get("friends") as ArrayList<DocumentReference>
                 for (friend in friends){
                     friend.get().addOnSuccessListener{ friend ->
-                        funForEveryFriend(User(friend))
+                        var usr = User(friend)
+                        if (usr.id != null){
+                            myFriendList.add(usr.id.toString())
+                        }
+                        funForEveryFriend(usr)
                         afterDataLoaded()
                     }
                     .addOnFailureListener{exception ->
                         Log.w(TAG, "Error getting documents: ", exception)
                     }
                 }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    fun getMyNotFriends(funForEveryUser: (User) -> Unit, afterDataLoaded: () -> Unit){
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { users ->
+                for (u in users){
+                    var user = User(u)
+                    if (user.id.toString() !in myFriendList){
+                        funForEveryUser(user)
+                    }
+                }
+                afterDataLoaded()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    fun getAllUsers(funForEveryUser: (User) -> Unit, afterDataLoaded: () -> Unit){
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { users ->
+                for (u in users){
+                    funForEveryUser(User(u))
+                }
+                afterDataLoaded()
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -177,6 +235,7 @@ class DatabaseHandler {
             .update(user.toHashMap())
             .addOnSuccessListener {
                 Log.d(TAG, "Updated user!")
+                getUser(::initMe)
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }

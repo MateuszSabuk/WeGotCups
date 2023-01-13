@@ -1,3 +1,6 @@
 package fr.isep.wegotcups.friends
 
-class FriendsItemViewModel(val image: Int, val name: String, val dateAndTime: String, val userId: String) {}
+import fr.isep.wegotcups.databasehandler.EventData
+import fr.isep.wegotcups.databasehandler.User
+
+class FriendsItemViewModel(val user: User, val event: EventData? = null) {}

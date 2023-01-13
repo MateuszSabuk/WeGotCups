@@ -9,15 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
 import fr.isep.wegotcups.databasehandler.EventData
+import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
 import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
+import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 import fr.isep.wegotcups.home.EntryFragment
 
-class ModalBottomSheetPerson : BottomSheetDialogFragment() {
+class ModalBottomSheetPerson(var event: EventData) : BottomSheetDialogFragment() {
 
     private lateinit var recyclerViews : RecyclerView
+
+    private val dbh: DatabaseHandler = DatabaseHandler()
+    private var data = ArrayList<FriendsItemViewModel>()
+    private lateinit var adapter: AddFriendsRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,31 +40,27 @@ class ModalBottomSheetPerson : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerViews = view.findViewById(R.id.add_members_recycler_view)
         recyclerViews.layoutManager = LinearLayoutManager(context)
-        val data = ArrayList<FriendsItemViewModel>()
-        for (i in 1..10) {
-            data.add(FriendsItemViewModel(getRandomAvatar(), "User name " + i, "@username", "randomuserid"))
-        }
-        val adapter = AddFriendsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        data = ArrayList()
+        dbh.getMyFriends(::addFriendToData, ::loadDataToRecyclerView)
+    }
+
+    private fun addFriendToData(user: User){
+        event.name = "HAHAHAH"
+        data.add(FriendsItemViewModel(user, event))
+    }
+
+    private fun onListItemClick(position: Int) {
+        print(position)
+    }
+
+    private fun loadDataToRecyclerView(){
+        adapter = AddFriendsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         recyclerViews.adapter = adapter
-    }
-
-    fun onListItemClick(position: Int){
-    }
-
-    //TODO - remove
-    private fun getRandomAvatar(): Int {
-        val rnds = (0..7).random()
-        when(rnds){
-            0 -> return R.drawable.avatar_deer
-            1 -> return R.drawable.avatar_cat
-            2 -> return R.drawable.avatar_panda
-            3 -> return R.drawable.avatar_pig
-            4 -> return R.drawable.avatar_dog
-            5 -> return R.drawable.avatar_monkey
-            6 -> return R.drawable.avatar_fox
-            7 -> return R.drawable.avatar_chicken
-            else -> return R.drawable.avatar_monkey
-        }
     }
 }
 
@@ -79,7 +82,7 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         binding.toolBar.setOnMenuItemClickListener{it->
             when(it.itemId){
                 R.id.add_person -> {
-                    val modalBottomSheet = ModalBottomSheetPerson()
+                    val modalBottomSheet = ModalBottomSheetPerson(event)
                     modalBottomSheet.show(parentFragmentManager, ModalBottomSheetPerson.TAG)
                 }
                 R.id.add_task -> {

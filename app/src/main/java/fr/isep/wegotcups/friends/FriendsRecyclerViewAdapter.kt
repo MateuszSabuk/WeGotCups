@@ -17,10 +17,14 @@ class FriendsRecyclerViewAdapter (private val mList: List<FriendsItemViewModel>,
     }
 
     override fun onBindViewHolder(holder: FriendsRecyclerViewAdapter.ViewHolder, position: Int) {
-        val ItemsViewModel = mList[position]
-        holder.imageView.setImageResource(ItemsViewModel.image)
-        holder.textName.text = ItemsViewModel.name
-        holder.textDateAndTime.text = ItemsViewModel.dateAndTime
+        val user = mList[position].user
+        user.getProfilePicture(holder.imageView)
+        holder.textName.text = user.name
+        var userTag = ""
+        if (user.userTag.toString() != "null"){
+            userTag = user.userTag.toString()
+        }
+        holder.userTag.text = userTag
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +35,7 @@ class FriendsRecyclerViewAdapter (private val mList: List<FriendsItemViewModel>,
         : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.event_cover_photo_image_view)
         val textName: TextView = itemView.findViewById(R.id.event_name)
-        val textDateAndTime: TextView = itemView.findViewById(R.id.event_date)
+        val userTag: TextView = itemView.findViewById(R.id.event_date)
 
         init {
             itemView.setOnClickListener(this)

@@ -4,12 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.ActivityAddFriendsBinding
 import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
+import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 
 class AddFriendActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddFriendsBinding
+    val data = ArrayList<FriendsItemViewModel>()
+    val dbh = DatabaseHandler()
+    val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,16 +27,33 @@ class AddFriendActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.addFriendsRecyclerView.layoutManager = LinearLayoutManager(this)
-        val data = ArrayList<FriendsItemViewModel>()
+
+
+        dbh.getMyNotFriends(::addUserToData,::loadDataToRecyclerView)
+
         for (i in 1..10) {
-            data.add(FriendsItemViewModel(getRandomAvatar(), "User name " + i, "@username", "randomuserid"))
+
         }
-        val adapter = AddFriendsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
-        binding.addFriendsRecyclerView.adapter = adapter
     }
 
     fun onListItemClick(position: Int){
 
+    }
+
+    private fun addUserToData(user: User){
+        var userTag = ""
+        if (user.userTag.toString() != "null"){
+            userTag = user.userTag.toString()
+        }
+        if (user.id == auth.currentUser?.uid){
+            return
+        }
+        data.add(FriendsItemViewModel(user))
+    }
+
+    private fun loadDataToRecyclerView(){
+        val adapter = AddFriendsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+        binding.addFriendsRecyclerView.adapter = adapter
     }
 
     //TODO - remove
