@@ -22,6 +22,6 @@ class TaskFragment : ViewBindingFragment<FragmentTaskBinding>() {
     }
 
     private fun onListItemClick(position: Int) {
-        loadFragment(EventDetailFragment())
+        loadFragment(AddTaskFragment())
     }
 }

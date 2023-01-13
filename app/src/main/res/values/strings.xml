@@ -97,4 +97,6 @@
     <string name="spotify_more"><a href="https://support.spotify.com/us/article/collaborative-playlists/">More</a></string>
     <string name="hint_create_a_collaborative_playlist_and_share_it_with_your_friends">Hint: Create a Collaborative playlist and share it with your friends.</string>
     <string name="tasks">Tasks</string>
+    <string name="create_new_task">Create new task</string>
+    <string name="my_events">My events</string>
 </resources>

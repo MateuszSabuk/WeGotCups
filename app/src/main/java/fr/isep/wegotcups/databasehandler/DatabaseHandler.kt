@@ -57,7 +57,7 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit) {
+    fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit, afterEventsLoadedHorizontal: () -> Unit) {
         val currentUserReference: DocumentReference = db.document("/users/${auth.currentUser?.uid}")
         db.collection("events")
             .whereEqualTo("owner", auth.currentUser?.uid)
@@ -73,6 +73,7 @@ class DatabaseHandler {
                             funForEveryEvent(event)
                         }
                         afterEventsLoaded()
+                        afterEventsLoadedHorizontal()
                     }
                     .addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting documents: ", exception)

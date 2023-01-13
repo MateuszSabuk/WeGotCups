@@ -24,6 +24,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     private val dbh = DatabaseHandler()
     private lateinit var user: User
     private lateinit var adapter: EventsRecyclerViewAdapter
+    private lateinit var adapterHorizontal: EventsHorizontalRecyclerViewAdapter
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEntryBinding
         get() = FragmentEntryBinding::inflate
@@ -35,6 +36,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         (activity as MainActivity).userUpdateFunctions.add(::updateUsernameAndAvatar)
 
         binding.eventRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.myEventsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         binding.newEvent.setOnClickListener(){
             loadFragment(NameEventFragment())
@@ -42,12 +44,13 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
 
         binding.showOldSwitch.setOnClickListener {
             loadRecyclerAdapter()
+            loadHorizontalRecyclerAdapter()
         }
 
 
         //TODO make loading smoother
 
-        dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter)
+        dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter, ::loadHorizontalRecyclerAdapter)
     }
 
     override fun onResume() {
@@ -77,6 +80,15 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
             EventsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         }
         binding.eventRecyclerView.adapter = adapter
+    }
+
+    private fun loadHorizontalRecyclerAdapter() {
+        adapterHorizontal = if (binding.showOldSwitch.isChecked) {
+            EventsHorizontalRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
+        }else{
+            EventsHorizontalRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+        }
+        binding.myEventsRecyclerView.adapter = adapterHorizontal
     }
 
     private fun updateUsernameAndAvatar(){

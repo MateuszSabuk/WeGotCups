@@ -19,6 +19,7 @@ import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 import fr.isep.wegotcups.home.EntryFragment
+import fr.isep.wegotcups.task.AddTaskFragment
 
 class ModalBottomSheetPerson(var event: EventData) : BottomSheetDialogFragment() {
 
@@ -89,7 +90,7 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
                     modalBottomSheet.show(parentFragmentManager, ModalBottomSheetPerson.TAG)
                 }
                 R.id.add_task -> {
-                    println("Task")
+                    loadFragment(AddTaskFragment())
                 }
             }
             false
