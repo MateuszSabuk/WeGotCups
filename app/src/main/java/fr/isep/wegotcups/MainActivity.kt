@@ -19,6 +19,7 @@ import fr.isep.wegotcups.loginregister.AvatarFragment
 import fr.isep.wegotcups.loginregister.LoginRegisterActivity
 import fr.isep.wegotcups.notification.NotificationFragment
 import fr.isep.wegotcups.profile.ProfileFragment
+import fr.isep.wegotcups.task.TaskFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                     R.id.item_2 -> {
-                        loadFragment(EventDetailFragment())
+                        loadFragment(TaskFragment())
                         true
                     }
                     R.id.item_3 -> {

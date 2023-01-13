@@ -34,8 +34,8 @@ class FriendsRecyclerViewAdapter (private val mList: List<FriendsItemViewModel>,
     class ViewHolder(ItemView: View, private val onItemClicked: (position: Int) -> Unit)
         : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.event_cover_photo_image_view)
-        val textName: TextView = itemView.findViewById(R.id.event_name)
-        val userTag: TextView = itemView.findViewById(R.id.event_date)
+        val textName: TextView = itemView.findViewById(R.id.task_name)
+        val userTag: TextView = itemView.findViewById(R.id.event_name)
 
         init {
             itemView.setOnClickListener(this)

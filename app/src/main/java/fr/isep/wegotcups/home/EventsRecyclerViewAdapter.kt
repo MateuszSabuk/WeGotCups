@@ -1,14 +1,11 @@
 package fr.isep.wegotcups.home
 
-import android.content.ContentValues.TAG
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
@@ -46,8 +43,8 @@ class EventsRecyclerViewAdapter(private val mList: List<EventItemViewModel>, pri
     class ViewHolder(ItemView: View, private val onItemClicked: (position: Int) -> Unit)
         : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.event_cover_photo_image_view)
-        val textName: TextView = itemView.findViewById(R.id.event_name)
-        val textDateAndTime: TextView = itemView.findViewById(R.id.event_date)
+        val textName: TextView = itemView.findViewById(R.id.task_name)
+        val textDateAndTime: TextView = itemView.findViewById(R.id.event_name)
 
         init {
             itemView.setOnClickListener(this)

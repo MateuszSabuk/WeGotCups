@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
 
@@ -53,8 +52,8 @@ class AddFriendsRecyclerViewAdapter (private val mList: List<FriendsItemViewMode
     class ViewHolder(ItemView: View, private val onItemClicked: (position: Int) -> Unit)
         : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.event_cover_photo_image_view)
-        val textName: TextView = itemView.findViewById(R.id.event_name)
-        val userTag: TextView = itemView.findViewById(R.id.event_date)
+        val textName: TextView = itemView.findViewById(R.id.task_name)
+        val userTag: TextView = itemView.findViewById(R.id.event_name)
         val buttonAddFriend: Button = itemView.findViewById(R.id.add_friend)
 
         init {
