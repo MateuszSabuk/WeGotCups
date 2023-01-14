@@ -1,3 +1,5 @@
 package fr.isep.wegotcups.notification
 
-class NotificationItemViewModel (val image: Int, val name: String, val dateAndTime: String){}
+import fr.isep.wegotcups.databasehandler.Notification
+
+class NotificationItemViewModel (val notification: Notification){}

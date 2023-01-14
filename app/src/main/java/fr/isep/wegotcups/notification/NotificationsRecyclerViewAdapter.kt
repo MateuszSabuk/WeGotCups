@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isep.wegotcups.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<NotificationsRecyclerViewAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationsRecyclerViewAdapter.ViewHolder {
@@ -17,10 +19,13 @@ class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItem
     }
 
     override fun onBindViewHolder(holder: NotificationsRecyclerViewAdapter.ViewHolder, position: Int) {
-        val ItemsViewModel = mList[position]
-        holder.imageView.setImageResource(ItemsViewModel.image)
-        holder.textName.text = ItemsViewModel.name
-        holder.textDateAndTime.text = ItemsViewModel.dateAndTime
+        val notification = mList[position].notification
+        holder.imageView.setImageResource(R.drawable.event_cover) //TODO get image
+        notification.getDescription(holder.textName)
+
+        val displayDateFormat = SimpleDateFormat("dd/MMMM/yyyy HH:mm", Locale.getDefault())
+        val dateAndTime = displayDateFormat.format(Date(notification.time.seconds * 1000).time).toString()
+        holder.textDateAndTime.text = dateAndTime
     }
 
     override fun getItemCount(): Int {

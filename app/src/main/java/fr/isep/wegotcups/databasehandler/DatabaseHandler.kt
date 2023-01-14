@@ -3,13 +3,16 @@ package fr.isep.wegotcups.databasehandler
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
+import android.widget.TextView
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,6 +21,7 @@ import com.google.firebase.storage.UploadTask
 import fr.isep.wegotcups.MainActivity
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class DatabaseHandler {
     private val db = Firebase.firestore
@@ -131,18 +135,29 @@ class DatabaseHandler {
     }
 
     fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString()) {
-        val notification = hashMapOf(
-            "from" to from,
-            "to" to uid,
-            "type" to type,
-            "time" to Date(),
-        )
+        var notification = Notification(type, uid, from)
+        var map: HashMap<String, Any?>? = notification.toHashMap() ?: return@sendNotificationToUser
         db.collection("notifications")
-            .add(notification)
+            .add(map as HashMap<String, Any?>)
             .addOnSuccessListener {
                 Log.d(TAG, "Notification sent!")
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error sending notification", e) }
+    }
+
+    fun getNotifications(funForEveryNotification: (Notification) -> Unit, endFunction: () -> Unit){
+        db.collection("notifications")
+            .whereEqualTo("to", auth.uid)
+            .get()
+            .addOnSuccessListener { notifications ->
+                for ( notification in notifications ){
+                    funForEveryNotification(Notification(notification))
+                }
+                endFunction()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
     }
 
     fun getMyFriends(funForEveryUser: (User) -> Unit, afterDataLoaded: () -> Unit, invert: Boolean = false){
@@ -194,7 +209,10 @@ class DatabaseHandler {
             "numOfAvatar" to (0..7).random()
         )
         db.collection("users").document(user.uid).set(data, SetOptions.merge())
-            .addOnSuccessListener { sendNotificationToUser(0, user.uid) }
+            .addOnSuccessListener {
+                sendNotificationToUser(0, user.uid)
+                getUser(::initMe)
+            }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
@@ -259,4 +277,41 @@ class DatabaseHandler {
             }
 
     }
+
+    fun setNotificationText(textView: TextView, notification: Notification) {
+        when (notification.type){
+            0 -> textView.text = "Welcome!"
+            1 -> getNotificationAddedFriend(textView, notification.from.toString())
+            2 -> getNotificationSharedEvent(textView, notification.from.toString())
+            else -> ""
+            //    0 -> "Welcome!"
+            //    1 -> "$from has added you to the friend list!"
+            //    2 -> "You have been added to a new event: ${event.toString()}"
+        }
+    }
+
+    private fun getNotificationAddedFriend(textView: TextView, uid: String) {
+        db.collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { user ->
+                textView.text = "${User(user).name.toString()} has added you to the friend list!"
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    private fun getNotificationSharedEvent(textView: TextView, eid: String) {
+        db.collection("events").document(eid)
+            .get()
+            .addOnSuccessListener { event ->
+                textView.text = "${EventData(event).name.toString()} has added you to the friend list!"
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+
+
 }

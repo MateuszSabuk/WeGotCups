@@ -18,7 +18,12 @@ class User {
     constructor(document: DocumentSnapshot){
         id = document?.id.toString()
         name = document?.data?.get("name").toString()
-        friends = document?.data?.get("friends") as ArrayList<DocumentReference>
+
+        val fr = document?.data?.get("friends")
+        if (fr != null){
+            friends = fr as ArrayList<DocumentReference>
+        }
+
         val ut = document?.data?.get("userTag")
         if (ut != null){
             userTag = ut.toString()

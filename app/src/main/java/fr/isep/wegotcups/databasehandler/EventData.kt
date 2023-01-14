@@ -5,16 +5,20 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import java.util.*
 
 class EventData {
     constructor()
 
-    constructor(document: QueryDocumentSnapshot?){
+    constructor(document: DocumentSnapshot?){
         id = document?.id.toString()
         name = document?.data?.get("name").toString()
-        datetime = document?.data?.get("datetime") as Timestamp
+        val dt = document?.data?.get("datetime")
+        if (dt != null){
+            datetime =  dt as Timestamp
+        }
         imageUri = (document?.data?.get("imageUri").toString()).toUri()
         if (imageUri == "null".toUri()) imageUri = null
         dresscode = document?.data?.get("dresscode").toString()
