@@ -5,14 +5,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.*
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
@@ -21,11 +21,10 @@ import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
 import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
-import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
 import fr.isep.wegotcups.home.EntryFragment
 import fr.isep.wegotcups.task.AddTaskFragment
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment) : BottomSheetDialogFragment() {
 
@@ -102,12 +101,16 @@ class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment)
 }
 
 class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragment<FragmentEventDetailBinding>() {
+    private val dbh = DatabaseHandler()
+    private val auth = Firebase.auth
     private var spotifyUrl: String? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEventDetailBinding
         get() = FragmentEventDetailBinding::inflate
 
     override fun setup() {
+        //For not owners
+
         binding.eventName.title = event.name.toString()
         binding.eventDetailTime.text = event.getTimeFormatted("HH:mm")
         binding.date.text = event.getTimeFormatted("dd/MM/yyyy")
@@ -127,17 +130,24 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
             loadFragment(EditEventFragment())
         }
 
-        binding.toolBar.setOnMenuItemClickListener{it->
-            when(it.itemId){
-                R.id.add_person -> {
-                    val modalBottomSheet = ModalBottomSheetPerson(event,this)
-                    modalBottomSheet.show(parentFragmentManager, ModalBottomSheetPerson.TAG)
+        if(auth.currentUser?.uid != event.owner){
+            view?.findViewById<View>(R.id.add_person)?.isVisible = false
+            view?.findViewById<View>(R.id.add_task)?.isVisible = false
+            binding.editBasicInfo.isVisible = false
+            binding.addSection.isVisible = false
+        } else {
+            binding.toolBar.setOnMenuItemClickListener{it->
+                when(it.itemId){
+                    R.id.add_person -> {
+                        val modalBottomSheet = ModalBottomSheetPerson(event,this)
+                        modalBottomSheet.show(parentFragmentManager, ModalBottomSheetPerson.TAG)
+                    }
+                    R.id.add_task -> {
+                        loadFragment(AddTaskFragment())
+                    }
                 }
-                R.id.add_task -> {
-                    loadFragment(AddTaskFragment())
-                }
+                false
             }
-            false
         }
         binding.toolBar.setNavigationOnClickListener(){
             loadFragmentFromLeft(EntryFragment())
@@ -153,6 +163,11 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
                 startActivity(intent)
             }
         }
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
 
     }
 

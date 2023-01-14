@@ -50,7 +50,6 @@ class DatabaseHandler {
             "owner" to auth.currentUser?.uid,
             "datetime" to eventData?.datetime,
             "location" to eventData?.location.toString(),
-            //TODO set image uri
             "imageUri" to eventData?.imageUri.toString(),
             "dresscode" to eventData?.dresscode.toString(),
             "description" to eventData?.description.toString(),

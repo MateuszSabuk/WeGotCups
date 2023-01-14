@@ -17,6 +17,7 @@ class EventData {
     constructor(document: DocumentSnapshot?){
         id = document?.id.toString()
         name = document?.data?.get("name").toString()
+        owner = document?.data?.get("owner").toString()
         val dt = document?.data?.get("datetime")
         if (dt != null){
             datetime =  dt as Timestamp
@@ -33,6 +34,7 @@ class EventData {
 
     var id: String? = null
     var name: String? = null
+    var owner: String? = null
     var datetime: Timestamp = Timestamp(Date(0))
     var location: String? = null
     var imageUri: Uri? = null
