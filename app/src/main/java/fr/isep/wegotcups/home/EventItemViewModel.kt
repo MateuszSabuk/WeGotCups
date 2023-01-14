@@ -10,6 +10,5 @@ data class EventItemViewModel(var event: EventData){
     var image = R.drawable.event_cover
     var imageUri = event.imageUri
     var name: String = event.name.toString()
-    private val displayDateFormat = SimpleDateFormat("dd/MMMM/yyyy HH:mm", Locale.getDefault())
-    var dateAndTime = displayDateFormat.format(Date(event.datetime.seconds * 1000).time).toString()
+    var dateAndTime = event.getTimeFormatted("dd/MMMM/yyyy HH:mm")
 }

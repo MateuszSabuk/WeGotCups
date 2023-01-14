@@ -39,6 +39,7 @@ class ProfileFragment : Fragment() {
 
         user = (activity as MainActivity).user
         user.getProfilePicture(binding.profileFragmentImage)
+        (activity as MainActivity).dbh.getUser()
 
         updateUsername()
         (activity as MainActivity).userUpdateFunctions.add(::updateUsername)

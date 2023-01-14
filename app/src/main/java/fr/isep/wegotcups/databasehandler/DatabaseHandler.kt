@@ -3,6 +3,7 @@ package fr.isep.wegotcups.databasehandler
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
+import android.view.inputmethod.InputMethodSession.EventCallback
 import android.widget.TextView
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -34,7 +35,7 @@ class DatabaseHandler {
     }
     init {
         if(!staticVariablesStarted){
-            getUser(::initMe)
+            getUser()
             staticVariablesStarted = true
         }
     }
@@ -62,13 +63,12 @@ class DatabaseHandler {
     }
 
     fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit, afterEventsLoadedHorizontal: () -> Unit) {
-        val currentUserReference: DocumentReference = db.document("/users/${auth.currentUser?.uid}")
         db.collection("events")
             .whereEqualTo("owner", auth.currentUser?.uid)
             .get()
             .addOnSuccessListener { myDocuments ->
                 db.collection("events")
-                    .whereArrayContains("sharedWith", currentUserReference)
+                    .whereArrayContains("sharedWith", auth.currentUser?.uid.toString())
                     .get()
                     .addOnSuccessListener { sharedDocuments ->
                         var documents = (myDocuments + sharedDocuments).distinct()
@@ -87,6 +87,17 @@ class DatabaseHandler {
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
+    fun getEvent(eventReturn: (EventData)-> Unit, eid: String){
+        db.collection("events")
+            .document(eid)
+            .get()
+            .addOnSuccessListener { event ->
+                eventReturn(EventData(event))
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
 
     // Event ID
     // User ID
@@ -100,10 +111,10 @@ class DatabaseHandler {
             .addOnSuccessListener { user ->
                 if (user.exists()){
                     db.collection("events").document(eid)
-                        .update("sharedWith", FieldValue.arrayUnion(docRef))
+                        .update("sharedWith", FieldValue.arrayUnion(uid))
                         .addOnSuccessListener {
                             Log.d(TAG, "Friend successfully added!")
-                            sendNotificationToUser(2, uid)
+                            sendNotificationToUser(2, uid, eid = eid)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 } else {
@@ -134,8 +145,13 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error looking for the document", e) }
     }
 
-    fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString()) {
-        var notification = Notification(type, uid, from)
+    fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString(), eid: String? = null) {
+        var notification: Notification
+        notification = if(eid != null){
+            Notification(type, uid, from)
+        }else {
+            Notification(type, uid, from, eid)
+        }
         var map: HashMap<String, Any?>? = notification.toHashMap() ?: return@sendNotificationToUser
         db.collection("notifications")
             .add(map as HashMap<String, Any?>)
@@ -211,12 +227,12 @@ class DatabaseHandler {
         db.collection("users").document(user.uid).set(data, SetOptions.merge())
             .addOnSuccessListener {
                 sendNotificationToUser(0, user.uid)
-                getUser(::initMe)
+                getUser()
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun getUser(funReference: (User) -> Unit, uid: String = auth.currentUser?.uid.toString()) {
+    fun getUser(funReference: (User) -> Unit = ::initMe, uid: String = auth.currentUser?.uid.toString()) {
         db.collection("users").document(uid)
             .get()
             .addOnSuccessListener { user ->
@@ -233,7 +249,7 @@ class DatabaseHandler {
             .update(user.toHashMap())
             .addOnSuccessListener {
                 Log.d(TAG, "Updated user!")
-                getUser(::initMe)
+                getUser()
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
@@ -282,7 +298,7 @@ class DatabaseHandler {
         when (notification.type){
             0 -> textView.text = "Welcome!"
             1 -> getNotificationAddedFriend(textView, notification.from.toString())
-            2 -> getNotificationSharedEvent(textView, notification.from.toString())
+            2 -> getNotificationSharedEvent(textView, notification.eventId.toString())
             else -> ""
             //    0 -> "Welcome!"
             //    1 -> "$from has added you to the friend list!"
@@ -305,7 +321,8 @@ class DatabaseHandler {
         db.collection("events").document(eid)
             .get()
             .addOnSuccessListener { event ->
-                textView.text = "${EventData(event).name.toString()} has added you to the friend list!"
+                Log.d(TAG,EventData(event).name.toString())
+                textView.text = "You have been added to a new event: ${EventData(event).name.toString()}"
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)

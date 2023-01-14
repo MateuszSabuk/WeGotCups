@@ -42,19 +42,20 @@ class Notification {
                 numOfImage = noi.toInt()
             }
 
-            val ev = document?.data?.get("event")
-            if (ev != null){
-                event = ev as EventData
+            val eid = document?.data?.get("eventId")
+            if (eid != null){
+                eventId = eid as String
             }
         } catch (e: Exception) {
             Log.e(TAG,"hello", e)
         }
     }
 
-    constructor(type: Int, uid: String, from: String){
+    constructor(type: Int, uid: String, from: String, eid: String? = null){
         this.type = type
         to = uid
         this.from = from
+        this.eventId = eid
     }
 
     var id: String? = null
@@ -65,6 +66,7 @@ class Notification {
     var imageLocal: Boolean = true
     var numOfImage: Int = 0
     var event: EventData? = null
+    var eventId: String? = null
 
     fun getProfilePicture(imageView: ImageView) {
         if (imageLocal){
@@ -95,14 +97,14 @@ class Notification {
             "time" to time,
             "imageLocal" to imageLocal,
             "numOfImage" to numOfImage,
-            "event" to event,
+            "eventId" to eventId,
         )
         for ((key, value) in notification){
-            if(value == null && key != "event") {
+            if(value == null && key != "eventId") {
                 return null
             }
         }
-        return notification
+        return notification as HashMap<String, Any?>?
     }
 
     fun getDescription(textView: TextView) {

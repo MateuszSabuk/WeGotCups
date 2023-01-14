@@ -5,8 +5,10 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EventData {
@@ -23,6 +25,10 @@ class EventData {
         if (imageUri == "null".toUri()) imageUri = null
         dresscode = document?.data?.get("dresscode").toString()
         description = document?.data?.get("description").toString()
+        val sw = document?.data?.get("sharedWith")
+        if (sw != null){
+            sharedWith = sw as ArrayList<String>
+        }
     }
 
     var id: String? = null
@@ -31,6 +37,11 @@ class EventData {
     var location: String? = null
     var imageUri: Uri? = null
     var dresscode: String? = null
-    var description: String? = null
+    var description: String = ""
+    var sharedWith: ArrayList<String>? = null
 
+    fun getTimeFormatted(format:String=""): String{
+        val displayDateFormat = SimpleDateFormat(format,Locale.getDefault())
+        return displayDateFormat.format(Date(this.datetime.seconds * 1000).time).toString()
+    }
 }

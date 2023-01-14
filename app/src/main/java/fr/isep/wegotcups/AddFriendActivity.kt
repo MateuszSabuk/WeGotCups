@@ -2,6 +2,8 @@ package fr.isep.wegotcups
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
@@ -12,10 +14,14 @@ import fr.isep.wegotcups.databinding.ActivityAddFriendsBinding
 import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.friends.FriendsRecyclerViewAdapter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddFriendActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddFriendsBinding
     val data = ArrayList<FriendsItemViewModel>()
+    var filtered = ArrayList<FriendsItemViewModel>()
+    var searchFilter: String = ""
     val dbh = DatabaseHandler()
     val auth = Firebase.auth
 
@@ -29,22 +35,31 @@ class AddFriendActivity : AppCompatActivity() {
         binding.addFriendsRecyclerView.layoutManager = LinearLayoutManager(this)
 
 
+        binding.searchFriends.editText?.addTextChangedListener (object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                searchFilter = binding.searchFriends.editText?.text.toString()
+                    .lowercase(Locale.getDefault())
+                loadDataToRecyclerView()
+            }
+
+        })
+
+
         dbh.getMyFriends(::addUserToData,::loadDataToRecyclerView, true)
 
-        for (i in 1..10) {
-
-        }
     }
 
-    fun onListItemClick(position: Int){
+    private fun onListItemClick(position: Int){
 
     }
 
     private fun addUserToData(user: User){
-        var userTag = ""
-        if (user.userTag.toString() != "null"){
-            userTag = user.userTag.toString()
-        }
         if (user.id == auth.currentUser?.uid){
             return
         }
@@ -52,23 +67,11 @@ class AddFriendActivity : AppCompatActivity() {
     }
 
     private fun loadDataToRecyclerView(){
-        val adapter = AddFriendsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+        filtered = data.filter {
+                    it.user.userTag?.lowercase()?.contains(searchFilter) == true
+                    ||
+                    it.user.name!!.lowercase().contains(searchFilter)} as ArrayList
+        val adapter = AddFriendsRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
         binding.addFriendsRecyclerView.adapter = adapter
-    }
-
-    //TODO - remove
-    private fun getRandomAvatar(): Int {
-        val rnds = (0..7).random()
-        when(rnds){
-            0 -> return R.drawable.avatar_deer
-            1 -> return R.drawable.avatar_cat
-            2 -> return R.drawable.avatar_panda
-            3 -> return R.drawable.avatar_pig
-            4 -> return R.drawable.avatar_dog
-            5 -> return R.drawable.avatar_monkey
-            6 -> return R.drawable.avatar_fox
-            7 -> return R.drawable.avatar_chicken
-            else -> return R.drawable.avatar_monkey
-        }
     }
 }

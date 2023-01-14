@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var newEventData: EventData = EventData()
 
-    private val dbh = DatabaseHandler()
+    val dbh = DatabaseHandler()
 
     var user = User()
 
