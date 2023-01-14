@@ -42,6 +42,27 @@ class EventData {
     var description: String = ""
     var sharedWith: ArrayList<String>? = null
 
+    fun toHashMap(): MutableMap<String, Any> {
+        var map = mutableMapOf<String, Any>()
+        if (name != null) {
+            map["name"] = name.toString()
+        }
+        if (datetime != null) {
+            map["datetime"] = datetime
+        }
+        if (location != null) {
+            map["location"] = location.toString()
+        }
+        if (dresscode != null) {
+            map["dresscode"] = dresscode.toString()
+        }
+        if (sharedWith != null) {
+            map["sharedWith"] = sharedWith as ArrayList
+        }
+        map["description"] = description
+        return map
+    }
+
     fun getTimeFormatted(format:String=""): String{
         val displayDateFormat = SimpleDateFormat(format,Locale.getDefault())
         return displayDateFormat.format(Date(this.datetime.seconds * 1000).time).toString()

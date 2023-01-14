@@ -98,6 +98,16 @@ class DatabaseHandler {
             }
     }
 
+    fun updateEvent(event: EventData, done: ()->Unit) {
+        db.collection("events").document(event.id!!)
+            .update(event.toHashMap())
+            .addOnSuccessListener {
+                Log.d(TAG, "Event successfully updated!")
+                done()
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
+
     // Event ID
     // User ID
     fun shareEventWithUser(eid: String, uid:String){
@@ -112,7 +122,7 @@ class DatabaseHandler {
                     db.collection("events").document(eid)
                         .update("sharedWith", FieldValue.arrayUnion(uid))
                         .addOnSuccessListener {
-                            Log.d(TAG, "Friend successfully added!")
+                            Log.d(TAG, "Event successfully shared!")
                             sendNotificationToUser(2, uid, eid = eid)
                         }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }

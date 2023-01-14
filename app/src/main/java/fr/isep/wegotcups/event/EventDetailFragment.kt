@@ -109,25 +109,15 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         get() = FragmentEventDetailBinding::inflate
 
     override fun setup() {
-        //For not owners
-
-        binding.eventName.title = event.name.toString()
-        binding.eventDetailTime.text = event.getTimeFormatted("HH:mm")
-        binding.date.text = event.getTimeFormatted("dd/MM/yyyy")
-        binding.description.text = event.description
-        if (event.dresscode == null){
-            event.dresscode = "not specified"
-        }
-        binding.dressCode.text = event.dresscode
-
-
+        setText()
+        dbh.getEvent(::overwriteEvent, event.id!!)
 
         binding.addSection.setOnClickListener{
             showBottomSheetDialogFragment(AddSectionFragment())
         }
 
         binding.editBasicInfo.setOnClickListener{
-            loadFragment(EditEventFragment())
+            loadFragment(EditEventFragment(event))
         }
 
         if(auth.currentUser?.uid != event.owner){
@@ -164,6 +154,22 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
             }
         }
 
+    }
+
+    private fun setText() {
+        binding.eventName.title = event.name.toString()
+        binding.eventDetailTime.text = event.getTimeFormatted("HH:mm")
+        binding.date.text = event.getTimeFormatted("dd/MM/yyyy")
+        binding.description.text = event.description
+        if (event.dresscode == null){
+            event.dresscode = "not specified"
+        }
+        binding.dressCode.text = event.dresscode
+    }
+
+    fun overwriteEvent(newEvent: EventData){
+        event = newEvent
+        setText()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

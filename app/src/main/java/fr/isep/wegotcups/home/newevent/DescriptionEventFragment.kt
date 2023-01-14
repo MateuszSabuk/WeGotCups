@@ -12,8 +12,11 @@ class DescriptionEventFragment : ViewBindingFragment<FragmentDescriptionEventBin
 
     override fun setup() {
         binding.nextButton.setOnClickListener {
-            //TODO validate Description input
-            (activity as MainActivity).newEventData.description = binding.nameInput.editText?.text.toString()
+            var text = binding.nameInput.editText?.text.toString()
+            if (text == null || text == "null"){
+                text = ""
+            }
+            (activity as MainActivity).newEventData.description = text
             loadFragment(DoneEventFragment())
         }
 

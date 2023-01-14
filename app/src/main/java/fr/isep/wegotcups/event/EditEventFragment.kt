@@ -1,22 +1,30 @@
 package fr.isep.wegotcups.event
 
-import android.os.Bundle
+import android.content.ContentValues.TAG
 import android.text.format.DateFormat
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.Timestamp
+import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databinding.FragmentEditEventBinding
+import fr.isep.wegotcups.home.EntryFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EditEventFragment : ViewBindingFragment<FragmentEditEventBinding>() {
+class EditEventFragment(val event: EventData) : ViewBindingFragment<FragmentEditEventBinding>() {
+    private var date: String = ""
+    private var time: String = ""
+    private val dbh = DatabaseHandler()
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEditEventBinding
         get() = FragmentEditEventBinding::inflate
 
@@ -41,6 +49,56 @@ class EditEventFragment : ViewBindingFragment<FragmentEditEventBinding>() {
         binding.selectDate.setOnClickListener{
             openDatePicker()
         }
+
+        binding.nameInput.editText?.setText(event.name.toString())
+        binding.description.editText?.setText(event.description.toString())
+        binding.location.editText?.setText(event.location?.toString())
+        binding.selectDate.setText(event.getTimeFormatted("dd/MMMM/yyyy"))
+        binding.selectTime.setText(event.getTimeFormatted("HH:mm"))
+        date = event.getTimeFormatted("MM/dd/yyyy")
+        time = event.getTimeFormatted("HH:mm")
+        for(i in (0 until binding.spinner.adapter.count)){
+           if (event.dresscode.toString() == binding.spinner.adapter.getItem(i).toString()){
+               binding.spinner.setSelection(i)
+               break
+           }
+        }
+
+        binding.buttonDone.setOnClickListener {
+            if(validateInputs()){
+                dbh.updateEvent(event, ::finishEditing)
+            }
+        }
+    }
+
+    private fun finishEditing(){
+        (activity as MainActivity).supportFragmentManager.popBackStack()
+    }
+
+    private fun validateInputs(): Boolean{
+        val name = binding.nameInput.editText?.text.toString()
+        if (name.isBlank() or name.isEmpty()) {
+            return false
+        }
+        event.name = name
+
+        var desc = binding.description.editText?.text.toString()
+        if (desc == null || desc == "null"){
+            desc = ""
+        }
+        event.description = desc
+
+        if (date.isEmpty()){
+            return false
+        }
+        if (time.isEmpty()){
+            time = "0:0"
+        }
+        event.datetime = Timestamp(Date("$date $time"))
+
+        //TODO validate location
+        event.dresscode = binding.spinner.selectedItem.toString()
+        return true
     }
 
 
@@ -53,9 +111,12 @@ class EditEventFragment : ViewBindingFragment<FragmentEditEventBinding>() {
         datePicker.show(childFragmentManager, "TAG")
         datePicker.addOnPositiveButtonClickListener {
             val simpleDateFormat = SimpleDateFormat("dd/MMMM/yyyy", Locale.getDefault())
-            val date = simpleDateFormat.format(Date(it).time)
+            val displayDate = simpleDateFormat.format(Date(it).time)
 
-            binding.date.hint = date
+            val dateFormat = SimpleDateFormat("MM/dd/yyyy",Locale.getDefault())
+            date = dateFormat.format(Date(it).time)
+
+            binding.selectDate.setText(displayDate)
         }
 
     }
@@ -76,7 +137,8 @@ class EditEventFragment : ViewBindingFragment<FragmentEditEventBinding>() {
             val hour = timePicker.hour
             val minutes = timePicker.minute
 
-            binding.time.hint = hour.toString() + ":" + minutes.toString()
+            time = "$hour:$minutes"
+            binding.selectTime.setText(time)
         }
     }
 

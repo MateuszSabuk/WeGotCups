@@ -100,7 +100,7 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
             return
         }
         user.name = name.toString()
-        for (character in "!@#$%^&*()=+[]{}\"':;/?>,<"){
+        for (character in "!@#$%^&*()=+[]{}\"':;/?>,< "){
             if(tag.toString().contains(character)) return
         }
         dbh.tagExists(tag.toString(),::validationAfterTagCheck)
@@ -119,7 +119,6 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
         }
         dbh.updateUser(user)
 
-        // TODO Navigation is a mess
         (activity as MainActivity).supportFragmentManager.popBackStack()
     }
 
