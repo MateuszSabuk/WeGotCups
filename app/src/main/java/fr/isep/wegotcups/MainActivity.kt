@@ -86,7 +86,4 @@ class MainActivity : AppCompatActivity() {
          }
     }
 
-    fun navigationStack(fragment: Fragment){
-
-    }
 }

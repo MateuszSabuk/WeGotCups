@@ -33,31 +33,34 @@ class DownloadAndSaveImageTask(val context: Context) : AsyncTask<Pair<String, Im
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
         file = File("/data/data/fr.isep.wegotcups/files/${names?.get(0) as String}/${names?.get(1) as String}")
-        if (!file.exists())
-        mContext.get()?.let {
-            val bitmap = Glide.with(it)
-                .asBitmap()
-                .load(url)
-                .apply(requestOptions)
-                .submit()
-                .get()
-
-            try {
-                var file = File(it.filesDir, names?.get(0))
-                if (!file.exists()) {
-                    file.mkdir()
-                }
-                file = File(file, names?.get(1))
-                val out = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
-                out.flush()
-                out.close()
-                Log.i("Glide", "Image saved.")
-                result = true
-            } catch (e: Exception) {
-                Log.i("Glide", "Failed to save image.")
-            }
+        if (file.exists()){
+            return imageView
         }
+
+            mContext.get()?.let {
+                val bitmap = Glide.with(it)
+                    .asBitmap()
+                    .load(url)
+                    .apply(requestOptions)
+                    .submit()
+                    .get()
+
+                try {
+                    var file = File(it.filesDir, names?.get(0))
+                    if (!file.exists()) {
+                        file.mkdir()
+                    }
+                    file = File(file, names?.get(1))
+                    val out = FileOutputStream(file)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
+                    out.flush()
+                    out.close()
+                    Log.i("Glide", "Image saved.")
+                    result = true
+                } catch (e: Exception) {
+                    Log.i("Glide", "Failed to save image.")
+                }
+            }
         if (result){
             return imageView
         }
