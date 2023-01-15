@@ -21,10 +21,13 @@ import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
+import fr.isep.wegotcups.event.adapter.MembersRecyclerViewAdapter
+import fr.isep.wegotcups.event.adapter.MembersViewModel
 import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.home.EntryFragment
-import fr.isep.wegotcups.task.AddTaskFragment
+import fr.isep.wegotcups.task.TaskItemViewModel
+import fr.isep.wegotcups.task.TaskRecyclerViewAdapter
 import java.util.*
 
 
@@ -114,44 +117,56 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         setText()
         dbh.getEvent(::overwriteEvent, event.id!!)
 
-        binding.addSection.setOnClickListener{
-            showBottomSheetDialogFragment(AddSectionFragment())
+        binding.addSection.setOnClickListener {
+            showBottomSheetDialogFragment(SpotifyAddSectionFragment())
         }
 
-        binding.editBasicInfo.setOnClickListener{
+        binding.editBasicInfo.setOnClickListener {
             loadFragment(EditEventFragment(event))
         }
 
-        if(auth.currentUser?.uid != event.owner){
+        if (auth.currentUser?.uid != event.owner) {
             view?.findViewById<View>(R.id.add_person)?.isVisible = false
             binding.editBasicInfo.isVisible = false
             binding.addSection.isVisible = false
         } else {
-            binding.toolBar.setOnMenuItemClickListener{it->
-                when(it.itemId){
+            binding.toolBar.setOnMenuItemClickListener { it ->
+                when (it.itemId) {
                     R.id.add_person -> {
-                        val modalBottomSheet = ModalBottomSheetPerson(event,this)
+                        val modalBottomSheet = ModalBottomSheetPerson(event, this)
                         modalBottomSheet.show(parentFragmentManager, ModalBottomSheetPerson.TAG)
                     }
                 }
                 false
             }
         }
-        binding.toolBar.setNavigationOnClickListener(){
+        binding.toolBar.setNavigationOnClickListener() {
             loadFragmentFromLeft(EntryFragment())
         }
 
         spotifyUrl = loadSpotifyUrl()
-        if(spotifyUrl.isNullOrBlank()){
-           binding.playlistCard.visibility = View.GONE
-        }else{
-            binding.openSpotify.setOnClickListener(){
+        if (spotifyUrl.isNullOrBlank()) {
+            binding.playlistCard.visibility = View.GONE
+        } else {
+            binding.openSpotify.setOnClickListener() {
                 val uri: Uri = Uri.parse(spotifyUrl) // missing 'http://' will cause crashed
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }
         }
 
+        //TODO - binding to recycler view
+        binding.membersRecyclerView.layoutManager = LinearLayoutManager(context)
+        val data = ArrayList<MembersViewModel>()
+        for (i in 1..10) {
+            data.add(MembersViewModel(User(), EventData()))
+        }
+        val adapter = MembersRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+        binding.membersRecyclerView.adapter = adapter
+    }
+
+    private fun onListItemClick(position: Int) {
+        print(position)
     }
 
     private fun setImage(){
