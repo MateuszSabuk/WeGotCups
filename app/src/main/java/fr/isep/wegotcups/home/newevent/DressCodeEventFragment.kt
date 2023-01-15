@@ -29,5 +29,9 @@ class DressCodeEventFragment : ViewBindingFragment<FragmentDressCodeEventBinding
         binding.backButton.setOnClickListener(){
             loadFragmentFromLeft(CoverPhotoEventFragment())
         }
+
+        binding.skipButton.setOnClickListener(){
+            loadFragment(DescriptionEventFragment())
+        }
     }
 }

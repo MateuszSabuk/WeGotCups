@@ -1,6 +1,5 @@
 package fr.isep.wegotcups.home.newevent
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import fr.isep.wegotcups.MainActivity

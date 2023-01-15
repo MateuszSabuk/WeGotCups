@@ -19,8 +19,11 @@ class LocationEventFragment : ViewBindingFragment<FragmentLocationEventBinding>(
         }
 
         binding.backButton.setOnClickListener(){
-            //TODO
             loadFragmentFromLeft(DateEventFragment())
+        }
+
+        binding.skipButton.setOnClickListener(){
+            loadFragment(CoverPhotoEventFragment())
         }
     }
 }
