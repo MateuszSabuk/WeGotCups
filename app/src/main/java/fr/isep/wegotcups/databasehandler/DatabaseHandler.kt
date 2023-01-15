@@ -48,6 +48,7 @@ class DatabaseHandler {
             "imageUri" to eventData?.imageUri.toString(),
             "dresscode" to eventData?.dresscode.toString(),
             "description" to eventData?.description.toString(),
+            "playlist" to eventData?.playlist.toString(),
         )
 
         db.collection("events")

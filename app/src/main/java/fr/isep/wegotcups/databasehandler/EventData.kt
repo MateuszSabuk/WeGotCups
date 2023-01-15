@@ -27,6 +27,7 @@ class EventData {
         dresscode = document?.data?.get("dresscode").toString()
         description = document?.data?.get("description").toString()
         location = document?.data?.get("location").toString()
+        playlist = document?.data?.get("playlist").toString()
         val sw = document?.data?.get("sharedWith")
         if (sw != null){
             sharedWith = sw as ArrayList<String>
@@ -40,6 +41,7 @@ class EventData {
     var location: String = ""
     var imageUri: Uri? = null
     var dresscode: String? = null
+    var playlist: String? = null
     var description: String = ""
     var sharedWith: ArrayList<String>? = null
 
@@ -59,6 +61,7 @@ class EventData {
             map["sharedWith"] = sharedWith as ArrayList
         }
         map["description"] = description
+        map["playlist"] = playlist.toString()
         return map
     }
 
