@@ -6,7 +6,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
 import android.view.*
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,20 +29,16 @@ import fr.isep.wegotcups.event.adapter.MembersViewModel
 import fr.isep.wegotcups.friends.AddFriendsRecyclerViewAdapter
 import fr.isep.wegotcups.friends.FriendsItemViewModel
 import fr.isep.wegotcups.home.EntryFragment
-import fr.isep.wegotcups.task.TaskItemViewModel
-import fr.isep.wegotcups.task.TaskRecyclerViewAdapter
 import java.util.*
 
 
 class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment) : BottomSheetDialogFragment() {
 
     private lateinit var recyclerViews : RecyclerView
-
     private val dbh: DatabaseHandler = DatabaseHandler()
     private var data = ArrayList<FriendsItemViewModel>()
     var filtered = ArrayList<FriendsItemViewModel>()
     var searchFilter: String = ""
-    private lateinit var adapter: AddFriendsRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +77,6 @@ class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment)
 
     private fun updateEvent(eventData: EventData) {
         par.event = eventData
-        par.refreshMembersRecycler()
     }
 
     override fun onResume() {
@@ -106,11 +104,57 @@ class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment)
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class ModalBottomSheetPlaylist(var event: EventData, var par: EventDetailFragment) : BottomSheetDialogFragment() {
+    private lateinit var doneButton : Button
+    private lateinit var cancelButton : Button
+    private lateinit var url: TextInputEditText
+    private lateinit var more : TextView
+    private val dbh: DatabaseHandler = DatabaseHandler()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_spotify_add_section, container, false)
+
+    companion object {
+        const val TAG = "ModalBottomSheet"
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        url = view.findViewById(R.id.playlist_url_edit)
+        doneButton = view.findViewById(R.id.done_button)
+        doneButton.setOnClickListener(){
+            if (validateInputs()){
+                event.playlist = url.text.toString()
+                dbh.updateEvent(event, ::done)
+                this.dialog?.hide()
+            }
+        }
+
+        cancelButton = view.findViewById<Button?>(R.id.cancel_button)
+        cancelButton.setOnClickListener(){
+            this.dialog?.hide()
+        }
+
+        more = view.findViewById(R.id.more_spotify)
+        more.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    fun done(){}
+
+    private fun validateInputs(): Boolean{
+        return (url.text.toString().startsWith("https://open.spotify.com"))
+    }
+}
+
 class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragment<FragmentEventDetailBinding>() {
     private val dbh = DatabaseHandler()
     private val auth = Firebase.auth
     private var spotifyUrl: String? = null
+    val URL_MIN_SIZE = 8
+
     private var data = ArrayList<MembersViewModel>()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEventDetailBinding
@@ -148,9 +192,10 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         }
 
         spotifyUrl = loadSpotifyUrl()
-        if (spotifyUrl.isNullOrBlank()) {
+        if (spotifyUrl?.length!! < URL_MIN_SIZE) {
             binding.playlistCard.visibility = View.GONE
         } else {
+            binding.addSection.visibility = View.GONE
             binding.openSpotify.setOnClickListener() {
                 val uri: Uri = Uri.parse(spotifyUrl) // missing 'http://' will cause crashed
                 val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -226,6 +271,6 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
 
     //TODO - make loading of data from the db
     private fun loadSpotifyUrl():String?{
-        return "https://open.spotify.com/playlist/15sBiFlWRq2MuTeq4Q7Sb3?si=fSGtjKjOTR2Ox0p5Hr0_fw&pt=ffc09e7a3b7e3629324d29b48b60b911"
+        return event.playlist
     }
 }
