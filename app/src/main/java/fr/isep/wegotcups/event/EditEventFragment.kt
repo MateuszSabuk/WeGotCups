@@ -53,6 +53,10 @@ class EditEventFragment(val event: EventData) : ViewBindingFragment<FragmentEdit
             openDatePicker()
         }
 
+        binding.toolBar.setNavigationOnClickListener(){
+            finishEditing()
+        }
+
         setImage()
         binding.nameInput.editText?.setText(event.name.toString())
         binding.description.editText?.setText(event.description.toString())

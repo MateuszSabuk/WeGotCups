@@ -23,5 +23,9 @@ class DescriptionEventFragment : ViewBindingFragment<FragmentDescriptionEventBin
         binding.backButton.setOnClickListener(){
             loadFragmentFromLeft(DressCodeEventFragment())
         }
+
+        binding.skipButton.setOnClickListener(){
+            loadFragment(DoneEventFragment())
+        }
     }
 }

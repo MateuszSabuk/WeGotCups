@@ -45,6 +45,9 @@ class CoverPhotoEventFragment : ViewBindingFragment<FragmentCoverPhotoEventBindi
         binding.backCancel.setOnClickListener(){
             loadFragmentFromLeft(LocationEventFragment())
         }
+        binding.skipButton.setOnClickListener(){
+            loadFragment(DressCodeEventFragment())
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
