@@ -357,8 +357,22 @@ class DatabaseHandler {
         when (notification.type){
             0 -> textView.text = "Welcome!"
             1 -> getNotificationAddedFriend(textView, notification.from.toString())
-            2 -> getNotificationSharedEvent(textView, notification.from.toString())
+            2 -> getNotificationSharedEvent(textView, notification.eventId.toString())
             3 -> getNotificationDeletedEvent(textView, notification.from.toString())
+            else -> ""
+            //    0 -> "Welcome!"
+            //    1 -> "$from has added you to the friend list!"
+            //    2 -> "You have been added to a new event: ${event.toString()}"
+        }
+    }
+
+
+    fun setLetter(textView: TextView, notification: Notification) {
+        when (notification.type){
+            0 -> textView.text = "W"
+            1 -> getNotificationAddedFriendLetter(textView, notification.from.toString())
+            2 -> getNotificationSharedEventLetter(textView, notification.eventId.toString())
+            3 -> textView.text = "D"
             else -> ""
             //    0 -> "Welcome!"
             //    1 -> "$from has added you to the friend list!"
@@ -376,20 +390,6 @@ class DatabaseHandler {
                 Log.w(TAG, "Error getting documents: ", exception)
             }
 
-    }
-
-
-    fun setLetter(textView: TextView, notification: Notification) {
-        when (notification.type){
-            0 -> textView.text = "W"
-            1 -> getNotificationAddedFriendLetter(textView, notification.from.toString())
-            2 -> getNotificationSharedEventLetter(textView, notification.eventId.toString())
-            3 -> textView.text = "D"
-            else -> ""
-            //    0 -> "Welcome!"
-            //    1 -> "$from has added you to the friend list!"
-            //    2 -> "You have been added to a new event: ${event.toString()}"
-        }
     }
 
 
