@@ -28,6 +28,8 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     private lateinit var user: User
     private lateinit var adapter: EventsRecyclerViewAdapter
     private lateinit var adapterHorizontal: EventsHorizontalRecyclerViewAdapter
+    private var loading = true
+    private var loadingHorizontal = true
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEntryBinding
         get() = FragmentEntryBinding::inflate
@@ -53,10 +55,14 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         binding.noEventsHorizontalView.isVisible = false
         binding.noEventsView.isVisible = false
 
-        //TODO make loading smoother
-
+        loading = true
+        loadingHorizontal = true
         dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter)
         dbh.getMyEvents(::addEventToHorizontalData, ::loadHorizontalRecyclerAdapter,1)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun onListItemClick(position: Int) {
@@ -92,6 +98,10 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     }
 
     private fun loadRecyclerAdapter() {
+        loading = false
+        if(!loading && !loadingHorizontal){
+            binding.loadingPanel.isVisible = false
+        }
         val hideOld = binding.showOldSwitch.isChecked
         adapter = if (binding.showOldSwitch.isChecked) {
             EventsRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
@@ -110,6 +120,10 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     }
 
     private fun loadHorizontalRecyclerAdapter() {
+        loadingHorizontal = false
+        if(!loading && !loadingHorizontal){
+            binding.loadingPanel.isVisible = false
+        }
         val hideOld = binding.showOldSwitch.isChecked
         adapterHorizontal = if (hideOld) {
             EventsHorizontalRecyclerViewAdapter(horizontalFiltered) { position -> onHorizontalListItemClick(position) }
