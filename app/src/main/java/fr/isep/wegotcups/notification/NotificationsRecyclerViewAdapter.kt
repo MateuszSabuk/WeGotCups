@@ -1,5 +1,6 @@
 package fr.isep.wegotcups.notification
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,11 +8,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 import java.text.SimpleDateFormat
 import java.util.*
 
 class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<NotificationsRecyclerViewAdapter.ViewHolder>(){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationsRecyclerViewAdapter.ViewHolder {
+    val dbh = DatabaseHandler()
+    lateinit var parent: ViewGroup
+    override fun onCreateViewHolder(_parent: ViewGroup, viewType: Int): NotificationsRecyclerViewAdapter.ViewHolder {
+        parent = _parent
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_notification_view, parent, false)
 
@@ -20,7 +26,12 @@ class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItem
 
     override fun onBindViewHolder(holder: NotificationsRecyclerViewAdapter.ViewHolder, position: Int) {
         val notification = mList[position].notification
-        holder.imageView.setImageResource(R.drawable.event_cover) //TODO get image
+        if (notification.event?.imageUri == null){
+            holder.imageView.setImageResource(R.drawable.event_cover)
+        } else {
+            DownloadAndSaveImageTask(parent.context).execute(Pair(notification.event!!.imageUri.toString(), holder.imageView))
+            holder.imageView.setImageURI(dbh.localUriFromUri(notification.event!!.imageUri as Uri))
+        }
         notification.getDescription(holder.textName)
 
         val displayDateFormat = SimpleDateFormat("dd/MMMM/yyyy HH:mm", Locale.getDefault())

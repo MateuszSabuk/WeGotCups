@@ -39,6 +39,10 @@ class User {
         } else if (noa is Long) {
             numOfAvatar = noa.toInt()
         }
+        val au = document?.data?.get("avatarUri")
+        if (au is Uri){
+            avatarUri = au
+        }
     }
 
     var id: String? = null
@@ -68,8 +72,10 @@ class User {
             }
             return
         }
-        if (avatarUri == null) return
-
+        if (avatarUri != null) {
+            DownloadAndSaveImageTask(imageView.context).execute(Pair(avatarUri.toString(), imageView))
+            imageView.setImageURI(dbh.localUriFromUri(avatarUri as Uri))
+        }
     }
 
     fun toHashMap(): MutableMap<String, Any> {
@@ -82,6 +88,9 @@ class User {
         }
         map["avatarLocal"] = avatarLocal
         map["numOfAvatar"] = numOfAvatar
+        if (avatarUri!= null){
+            map["avatarUri"] = avatarUri!!
+        }
         return map
     }
 }

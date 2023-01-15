@@ -111,15 +111,20 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
             return
         }
         user.userTag = tag
-        if (chosenLocalAvatar == null){
+        if (chosenLocalAvatar == null || !user.avatarLocal){
             user.avatarLocal = false
-            // TODO send image to database
+            dbh.addPhoto(imageUri as Uri,"profilePictures", ::setEventImageUri, )
         } else {
+            user.avatarLocal = true
             user.numOfAvatar = chosenLocalAvatar as Int
+            dbh.updateUser(user)
+            (activity as MainActivity).supportFragmentManager.popBackStack()
         }
-        dbh.updateUser(user)
-
-        (activity as MainActivity).supportFragmentManager.popBackStack()
     }
 
+    private fun setEventImageUri(uri: Uri){
+        user.avatarUri = uri
+        dbh.updateUser(user)
+        (activity as MainActivity).supportFragmentManager.popBackStack()
+    }
 }

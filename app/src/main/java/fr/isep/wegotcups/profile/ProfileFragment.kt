@@ -31,7 +31,6 @@ class ProfileFragment : Fragment() {
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
-        // TODO MATEUSZ add Image from database to picture
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
