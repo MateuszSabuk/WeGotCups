@@ -50,16 +50,13 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
             loadRecyclerAdapter()
             loadHorizontalRecyclerAdapter()
         }
-
+        binding.noEventsHorizontalView.isVisible = false
+        binding.noEventsView.isVisible = false
 
         //TODO make loading smoother
 
         dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter)
         dbh.getMyEvents(::addEventToHorizontalData, ::loadHorizontalRecyclerAdapter,1)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun onListItemClick(position: Int) {
@@ -95,12 +92,21 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     }
 
     private fun loadRecyclerAdapter() {
+        val hideOld = binding.showOldSwitch.isChecked
         adapter = if (binding.showOldSwitch.isChecked) {
             EventsRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
         }else{
             EventsRecyclerViewAdapter(data) { position -> onListItemClick(position) }
         }
         binding.eventRecyclerView.adapter = adapter
+
+        if (!((hideOld && filtered.isEmpty()) || (!hideOld && data.size == 0))){
+            binding.myEventsRecyclerView.isVisible = true
+            binding.noEventsView.isVisible = false
+        } else {
+            binding.myEventsRecyclerView.isVisible = false
+            binding.noEventsView.isVisible = true
+        }
     }
 
     private fun loadHorizontalRecyclerAdapter() {
@@ -111,8 +117,14 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
             EventsHorizontalRecyclerViewAdapter(horizontalData) { position -> onHorizontalListItemClick(position) }
         }
         binding.myEventsRecyclerView.adapter = adapterHorizontal
-        binding.myEventsRecyclerView.isVisible =
-            !((hideOld && horizontalFiltered.isEmpty()) || (!hideOld && horizontalData.size == 0))
+
+        if (!((hideOld && horizontalFiltered.isEmpty()) || (!hideOld && horizontalData.size == 0))){
+            binding.myEventsRecyclerView.isVisible = true
+            binding.noEventsHorizontalView.isVisible = false
+        } else {
+            binding.myEventsRecyclerView.isVisible = false
+            binding.noEventsHorizontalView.isVisible = true
+        }
     }
 
     private fun updateUsernameAndAvatar(){
