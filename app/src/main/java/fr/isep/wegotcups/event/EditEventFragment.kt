@@ -1,6 +1,8 @@
 package fr.isep.wegotcups.event
 
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.net.Uri
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databinding.FragmentEditEventBinding
 import fr.isep.wegotcups.home.EntryFragment
@@ -50,6 +53,7 @@ class EditEventFragment(val event: EventData) : ViewBindingFragment<FragmentEdit
             openDatePicker()
         }
 
+        setImage()
         binding.nameInput.editText?.setText(event.name.toString())
         binding.description.editText?.setText(event.description.toString())
         binding.location.editText?.setText(event.location)
@@ -65,10 +69,20 @@ class EditEventFragment(val event: EventData) : ViewBindingFragment<FragmentEdit
            }
         }
 
+
         binding.buttonDone.setOnClickListener {
             if(validateInputs()){
                 dbh.updateEvent(event, ::finishEditing)
             }
+        }
+    }
+
+    private fun setImage(){
+        if (event.imageUri == null){
+            binding.profileFragmentImage.setImageResource(R.drawable.event_cover)
+        } else {
+            DownloadAndSaveImageTask(activity as Context).execute(Pair(event.imageUri.toString(), binding.profileFragmentImage))
+            binding.profileFragmentImage.setImageURI(dbh.localUriFromUri(event.imageUri as Uri))
         }
     }
 
