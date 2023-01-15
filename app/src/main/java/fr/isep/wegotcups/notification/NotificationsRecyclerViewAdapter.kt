@@ -26,12 +26,7 @@ class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItem
 
     override fun onBindViewHolder(holder: NotificationsRecyclerViewAdapter.ViewHolder, position: Int) {
         val notification = mList[position].notification
-        if (notification.event?.imageUri == null){
-            holder.imageView.setImageResource(R.drawable.event_cover)
-        } else {
-            DownloadAndSaveImageTask(parent.context).execute(Pair(notification.event!!.imageUri.toString(), holder.imageView))
-            holder.imageView.setImageURI(dbh.localUriFromUri(notification.event!!.imageUri as Uri))
-        }
+        notification.getLetter(holder.textLetter)
         notification.getDescription(holder.textName)
 
         val displayDateFormat = SimpleDateFormat("dd/MMMM/yyyy HH:mm", Locale.getDefault())
@@ -45,7 +40,7 @@ class NotificationsRecyclerViewAdapter (private val mList: List<NotificationItem
 
     class ViewHolder(ItemView: View, private val onItemClicked: (position: Int) -> Unit)
         : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
-        val imageView: ImageView = itemView.findViewById(R.id.event_cover_photo_image_view)
+        val textLetter: TextView = itemView.findViewById(R.id.notification_letter)
         val textName: TextView = itemView.findViewById(R.id.task_name)
         val textDateAndTime: TextView = itemView.findViewById(R.id.event_name)
 

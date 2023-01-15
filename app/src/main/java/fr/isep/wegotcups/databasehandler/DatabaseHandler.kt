@@ -342,11 +342,35 @@ class DatabaseHandler {
         }
     }
 
+
+    fun setLetter(textView: TextView, notification: Notification) {
+        when (notification.type){
+            0 -> textView.text = "W"
+            1 -> getNotificationAddedFriendLetter(textView, notification.from.toString())
+            2 -> getNotificationSharedEventLetter(textView, notification.eventId.toString())
+            else -> ""
+            //    0 -> "Welcome!"
+            //    1 -> "$from has added you to the friend list!"
+            //    2 -> "You have been added to a new event: ${event.toString()}"
+        }
+    }
+
     private fun getNotificationAddedFriend(textView: TextView, uid: String) {
         db.collection("users").document(uid)
             .get()
             .addOnSuccessListener { user ->
                 textView.text = "${User(user).name.toString()} has added you to the friend list!"
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    private fun getNotificationAddedFriendLetter(textView: TextView, uid: String) {
+        db.collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { user ->
+                textView.text = "${User(user).name.toString()[0].uppercaseChar()}"
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -359,6 +383,18 @@ class DatabaseHandler {
             .addOnSuccessListener { event ->
                 Log.d(TAG,EventData(event).name.toString())
                 textView.text = "You have been added to a new event: ${EventData(event).name.toString()}"
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    private fun getNotificationSharedEventLetter(textView: TextView, eid: String) {
+        db.collection("events").document(eid)
+            .get()
+            .addOnSuccessListener { event ->
+                Log.d(TAG,EventData(event).name.toString())
+                textView.text = "${EventData(event).name.toString()[0].uppercaseChar()}"
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)

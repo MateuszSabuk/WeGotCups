@@ -110,4 +110,8 @@ class Notification {
     fun getDescription(textView: TextView) {
         dbh.setNotificationText(textView, this)
     }
+
+    fun getLetter(textView: TextView) {
+        dbh.setLetter(textView, this)
+    }
 }
