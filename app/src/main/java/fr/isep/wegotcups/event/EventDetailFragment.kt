@@ -128,10 +128,18 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
             loadFragment(EditEventFragment(event))
         }
 
+        binding.deleteEvent.setOnClickListener {
+            if(event.id != null){
+                dbh.deleteEvent(event.id.toString(), ::eventDeleted)
+            }
+        }
+
+
         if (auth.currentUser?.uid != event.owner) {
             view?.findViewById<View>(R.id.add_person)?.isVisible = false
             binding.editBasicInfo.isVisible = false
             binding.addSection.isVisible = false
+            binding.deleteEvent.isVisible = false
         } else {
             binding.toolBar.setOnMenuItemClickListener { it ->
                 when (it.itemId) {
@@ -171,6 +179,10 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         super.onResume()
         data = ArrayList()
         refreshMembersRecycler()
+    }
+
+    fun eventDeleted(){
+        activity?.supportFragmentManager?.popBackStack()
     }
 
     fun refreshMembersRecycler(){
@@ -220,7 +232,6 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-
     }
 
 

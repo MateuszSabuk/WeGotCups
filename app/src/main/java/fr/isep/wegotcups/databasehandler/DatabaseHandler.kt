@@ -56,6 +56,28 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
+    fun deleteEvent(eid: String, eventDeleted: ()-> Unit = {}){
+        db.collection("events").document(eid)
+            .get()
+            .addOnSuccessListener { event ->
+                if (EventData(event).sharedWith != null) {
+                    for(uid in EventData(event).sharedWith!!.asIterable()){
+                        sendNotificationToUser(3,uid,eid = eid)
+                    }
+                }
+                db.collection("events").document(eid)
+                    .delete()
+                    .addOnSuccessListener {
+                        eventDeleted()
+                        Log.d(TAG, "Event successfully deleted!")
+                    }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+
+    }
+
+
     fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit, sharedWithMe:Int = 0) {
         when (sharedWithMe){
             1 -> {
@@ -334,12 +356,25 @@ class DatabaseHandler {
         when (notification.type){
             0 -> textView.text = "Welcome!"
             1 -> getNotificationAddedFriend(textView, notification.from.toString())
-            2 -> getNotificationSharedEvent(textView, notification.eventId.toString())
+            2 -> getNotificationSharedEvent(textView, notification.from.toString())
+            3 -> getNotificationDeletedEvent(textView, notification.from.toString())
             else -> ""
             //    0 -> "Welcome!"
             //    1 -> "$from has added you to the friend list!"
             //    2 -> "You have been added to a new event: ${event.toString()}"
         }
+    }
+
+    private fun getNotificationDeletedEvent(textView: TextView, uid: String) {
+        db.collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { user ->
+                textView.text = "An event has been deleted by: ${User(user).name.toString()}"
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+
     }
 
 
@@ -348,12 +383,14 @@ class DatabaseHandler {
             0 -> textView.text = "W"
             1 -> getNotificationAddedFriendLetter(textView, notification.from.toString())
             2 -> getNotificationSharedEventLetter(textView, notification.eventId.toString())
+            3 -> textView.text = "D"
             else -> ""
             //    0 -> "Welcome!"
             //    1 -> "$from has added you to the friend list!"
             //    2 -> "You have been added to a new event: ${event.toString()}"
         }
     }
+
 
     private fun getNotificationAddedFriend(textView: TextView, uid: String) {
         db.collection("users").document(uid)
