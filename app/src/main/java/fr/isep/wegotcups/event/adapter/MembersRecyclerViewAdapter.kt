@@ -28,6 +28,7 @@ class MembersRecyclerViewAdapter (private val mList: List<MembersViewModel>, pri
         if (user.userTag.toString() != "null"){
             userTag = user.userTag.toString()
         }
+        holder.userTag.text = userTag
     }
 
     override fun getItemCount(): Int {

@@ -78,6 +78,7 @@ class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment)
 
     private fun updateEvent(eventData: EventData) {
         par.event = eventData
+        par.refreshMembersRecycler()
     }
 
     override fun onResume() {
@@ -105,10 +106,12 @@ class ModalBottomSheetPerson(var event: EventData, var par: EventDetailFragment)
     }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragment<FragmentEventDetailBinding>() {
     private val dbh = DatabaseHandler()
     private val auth = Firebase.auth
     private var spotifyUrl: String? = null
+    private var data = ArrayList<MembersViewModel>()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEventDetailBinding
         get() = FragmentEventDetailBinding::inflate
@@ -155,9 +158,8 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
             }
         }
 
-        //TODO - binding to recycler view
-        binding.membersRecyclerView.layoutManager = LinearLayoutManager(context)
-        val data = ArrayList<MembersViewModel>()
+        binding.membersRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
         for (i in 1..10) {
             data.add(MembersViewModel(User(), EventData()))
         }
@@ -165,8 +167,28 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         binding.membersRecyclerView.adapter = adapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        data = ArrayList()
+        refreshMembersRecycler()
+    }
+
+    fun refreshMembersRecycler(){
+        dbh.getMyFriends(::addFriendToData, ::loadDataToRecyclerView)
+    }
+
+    private fun addFriendToData(user: User){
+        data.add(MembersViewModel(user, event))
+    }
+
     private fun onListItemClick(position: Int) {
         print(position)
+    }
+
+    private fun loadDataToRecyclerView(){
+        data = data.filter {it.event?.sharedWith?.contains(it.user.id.toString()) != null && it.event?.sharedWith?.contains(it.user.id.toString()) == true} as ArrayList
+        val adapter = MembersRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+        binding.membersRecyclerView.adapter = adapter
     }
 
     private fun setImage(){
