@@ -183,7 +183,7 @@ class DatabaseHandler {
     }
 
     fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString(), eid: String? = null) {
-        var notification: Notification = if(eid != null){
+        var notification: Notification = if(eid == null){
             Notification(type, uid, from)
         }else {
             Notification(type, uid, from, eid)
