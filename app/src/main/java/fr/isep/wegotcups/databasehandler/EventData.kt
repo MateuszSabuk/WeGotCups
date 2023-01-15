@@ -26,6 +26,7 @@ class EventData {
         if (imageUri == "null".toUri()) imageUri = null
         dresscode = document?.data?.get("dresscode").toString()
         description = document?.data?.get("description").toString()
+        location = document?.data?.get("location").toString()
         val sw = document?.data?.get("sharedWith")
         if (sw != null){
             sharedWith = sw as ArrayList<String>
@@ -36,7 +37,7 @@ class EventData {
     var name: String? = null
     var owner: String? = null
     var datetime: Timestamp = Timestamp(Date(0))
-    var location: String? = null
+    var location: String = ""
     var imageUri: Uri? = null
     var dresscode: String? = null
     var description: String = ""
@@ -50,9 +51,7 @@ class EventData {
         if (datetime != null) {
             map["datetime"] = datetime
         }
-        if (location != null) {
-            map["location"] = location.toString()
-        }
+        map["location"] = location.toString()
         if (dresscode != null) {
             map["dresscode"] = dresscode.toString()
         }
