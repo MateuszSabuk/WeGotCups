@@ -162,6 +162,7 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
 
     override fun setup() {
         setText()
+
         dbh.getEvent(::overwriteEvent, event.id!!)
 
         binding.addSection.setOnClickListener {
@@ -269,10 +270,17 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
         binding.dressCode.text = event.dresscode
     }
 
+    private fun setOwner(user: User) {
+        if(user.name != null){
+            binding.owner.text = user.name!!
+        }
+    }
+
     private fun overwriteEvent(newEvent: EventData){
         event = newEvent
         setImage()
         setText()
+        dbh.getUser(::setOwner,event.owner.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

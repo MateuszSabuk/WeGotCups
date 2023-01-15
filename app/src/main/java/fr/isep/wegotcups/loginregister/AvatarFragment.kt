@@ -27,6 +27,7 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
 
     private val pickImage = 100
     private var imageUri: Uri? = null
+    private var imageChanged = false
 
     override fun setup() {
         user = (activity as MainActivity).user
@@ -43,40 +44,49 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
         binding.avatarFox.setOnClickListener{
             chosenLocalAvatar = 0
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_fox)
         }
         binding.avatarCat.setOnClickListener{
             chosenLocalAvatar = 1
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_cat)
         }
         binding.avatarDeer.setOnClickListener{
             chosenLocalAvatar = 2
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_deer)
         }
         binding.avatarDog.setOnClickListener{
             chosenLocalAvatar = 3
+            user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_dog)
         }
         binding.avatarChicken.setOnClickListener{
             chosenLocalAvatar = 4
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_chicken)
         }
         binding.avatarPig.setOnClickListener{
             chosenLocalAvatar = 5
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_pig)
         }
         binding.avatarMonkey.setOnClickListener{
             chosenLocalAvatar = 6
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_monkey)
         }
         binding.avatarPanda.setOnClickListener{
             chosenLocalAvatar = 7
             user.avatarLocal = true
+            imageChanged = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_panda)
         }
         binding.uploadButton.setOnClickListener{
@@ -96,6 +106,7 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
             imageUri = data?.data
             binding.avatarFragmentImage.setImageURI(imageUri)
             chosenLocalAvatar = null
+            imageChanged = true
         }
     }
 
@@ -118,12 +129,17 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
             return
         }
         user.userTag = tag
-        if (chosenLocalAvatar == null || !user.avatarLocal){
-            user.avatarLocal = false
-            dbh.addPhoto(imageUri as Uri,"profilePictures", ::setEventImageUri, )
+        if (imageChanged) {
+            if (chosenLocalAvatar == null || !user.avatarLocal){
+                user.avatarLocal = false
+                dbh.addPhoto(imageUri as Uri,"profilePictures", ::setEventImageUri, )
+            } else {
+                user.avatarLocal = true
+                user.numOfAvatar = chosenLocalAvatar as Int
+                dbh.updateUser(user)
+                (activity as MainActivity).supportFragmentManager.popBackStack()
+            }
         } else {
-            user.avatarLocal = true
-            user.numOfAvatar = chosenLocalAvatar as Int
             dbh.updateUser(user)
             (activity as MainActivity).supportFragmentManager.popBackStack()
         }
