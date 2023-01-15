@@ -1,6 +1,7 @@
 package fr.isep.wegotcups.profile
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,12 +12,16 @@ import com.google.firebase.auth.FirebaseUser
 import fr.isep.wegotcups.FriendsActivity
 import fr.isep.wegotcups.MainActivity
 import fr.isep.wegotcups.R
+import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.FragmentProfileBinding
 import fr.isep.wegotcups.loginregister.AvatarFragment
+import java.io.File
 
 
 class ProfileFragment : Fragment() {
+    val dbh = DatabaseHandler()
 
     private var _binding: FragmentProfileBinding? = null
     lateinit var user: User
@@ -85,6 +90,10 @@ class ProfileFragment : Fragment() {
             userTag = "@${user.userTag.toString()}"
         }
         binding.profileFragmentUsername.text = userTag
+        if (!user.avatarLocal && user.avatarUri != null){
+            DownloadAndSaveImageTask(binding.profileFragmentImage.context).execute(Pair(user.avatarUri.toString(), binding.profileFragmentImage))
+            binding.profileFragmentImage.setImageURI(dbh.localUriFromUri(user.avatarUri as Uri))
+        }
     }
 
 }

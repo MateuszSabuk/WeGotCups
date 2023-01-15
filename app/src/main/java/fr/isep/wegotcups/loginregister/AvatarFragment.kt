@@ -42,14 +42,17 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
 
         binding.avatarFox.setOnClickListener{
             chosenLocalAvatar = 0
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_fox)
         }
         binding.avatarCat.setOnClickListener{
             chosenLocalAvatar = 1
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_cat)
         }
         binding.avatarDeer.setOnClickListener{
             chosenLocalAvatar = 2
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_deer)
         }
         binding.avatarDog.setOnClickListener{
@@ -58,18 +61,22 @@ class AvatarFragment : ViewBindingFragment<FragmentAvatarBinding>() {
         }
         binding.avatarChicken.setOnClickListener{
             chosenLocalAvatar = 4
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_chicken)
         }
         binding.avatarPig.setOnClickListener{
             chosenLocalAvatar = 5
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_pig)
         }
         binding.avatarMonkey.setOnClickListener{
             chosenLocalAvatar = 6
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_monkey)
         }
         binding.avatarPanda.setOnClickListener{
             chosenLocalAvatar = 7
+            user.avatarLocal = true
             binding.avatarFragmentImage.setImageResource(R.drawable.avatar_panda)
         }
         binding.uploadButton.setOnClickListener{
