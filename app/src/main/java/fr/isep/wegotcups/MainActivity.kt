@@ -46,10 +46,6 @@ class MainActivity : AppCompatActivity() {
                         loadFragment(EntryFragment())
                         true
                     }
-                    R.id.item_2 -> {
-                        loadFragment(TaskFragment())
-                        true
-                    }
                     R.id.item_3 -> {
                         loadFragment(NotificationFragment())
                         true
