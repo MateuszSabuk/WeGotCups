@@ -2,6 +2,7 @@ package fr.isep.wegotcups.databasehandler
 
 import android.net.Uri
 import android.widget.ImageView
+import androidx.core.net.toUri
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -40,8 +41,10 @@ class User {
             numOfAvatar = noa.toInt()
         }
         val au = document?.data?.get("avatarUri")
-        if (au is Uri){
+        if (au is Uri ){
             avatarUri = au
+        } else if (au is String){
+            avatarUri = au.toUri()
         }
     }
 
