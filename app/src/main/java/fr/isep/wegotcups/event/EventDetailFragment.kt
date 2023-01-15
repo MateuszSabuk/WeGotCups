@@ -124,7 +124,6 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
 
         if(auth.currentUser?.uid != event.owner){
             view?.findViewById<View>(R.id.add_person)?.isVisible = false
-            view?.findViewById<View>(R.id.add_task)?.isVisible = false
             binding.editBasicInfo.isVisible = false
             binding.addSection.isVisible = false
         } else {
@@ -133,9 +132,6 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
                     R.id.add_person -> {
                         val modalBottomSheet = ModalBottomSheetPerson(event,this)
                         modalBottomSheet.show(parentFragmentManager, ModalBottomSheetPerson.TAG)
-                    }
-                    R.id.add_task -> {
-                        loadFragment(AddTaskFragment())
                     }
                 }
                 false
