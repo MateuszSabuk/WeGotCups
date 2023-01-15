@@ -14,8 +14,6 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -30,7 +28,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonGotoLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_RegisterFragment_to_LoginFragment)
+            (activity as LoginRegisterActivity).supportFragmentManager.popBackStack()
         }
 
         binding.buttonRegister.setOnClickListener {
@@ -58,6 +56,7 @@ class RegisterFragment : Fragment() {
             } else {
                 if (activity is LoginRegisterActivity) {
                     (activity as LoginRegisterActivity).createAccount(email, name, password)
+                    (activity as LoginRegisterActivity).supportFragmentManager.popBackStack()
                 }
             }
         }

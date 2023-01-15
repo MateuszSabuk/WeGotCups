@@ -6,6 +6,12 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -20,6 +26,7 @@ class LoginRegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginregisterBinding
     private lateinit var auth: FirebaseAuth
     private val dbh: DatabaseHandler = DatabaseHandler()
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -30,20 +37,13 @@ class LoginRegisterActivity : AppCompatActivity() {
 
         // Auto Login
         if (auth.currentUser != null) {
-            updateUI(auth.currentUser)
+            if (auth.currentUser!!.isEmailVerified) {
+                updateUI(auth.currentUser)
+            }
         }
 
         binding = ActivityLoginregisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
-
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-            reload();
-        }
     }
 
     fun createAccount(email: String, name: String, password: String) {
@@ -63,7 +63,7 @@ class LoginRegisterActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 Log.d(TAG, "Username added")
                                 dbh.createUser(user)
-                                updateUI(user)
+                                sendEmailVerification()
                             }
                         }
                 } else {
@@ -89,6 +89,11 @@ class LoginRegisterActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
+                    if(! user!!.isEmailVerified){
+                        Toast.makeText(baseContext, "Email not verified!",
+                            Toast.LENGTH_SHORT).show()
+                        return@addOnCompleteListener
+                    }
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -100,13 +105,12 @@ class LoginRegisterActivity : AppCompatActivity() {
         // [END sign_in_with_email]
     }
 
-    // TODO verification of the email
-    private fun sendEmailVerification() {
+    fun sendEmailVerification() {
         // [START send_email_verification]
         val user = auth.currentUser!!
         user.sendEmailVerification()
             .addOnCompleteListener(this) { task ->
-                // Email Verification sent
+                Log.i("email verification","sent")
             }
         // [END send_email_verification]
     }
@@ -119,10 +123,10 @@ class LoginRegisterActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun reload() {
-    }
+
 
     companion object {
         private const val TAG = "EmailPassword"
+        const val RC_SIGN_IN = 9001
     }
 }
