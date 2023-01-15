@@ -1,5 +1,7 @@
 package fr.isep.wegotcups.notification
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,8 @@ class NotificationFragment : ViewBindingFragment<FragmentNotificationBinding>() 
     override fun setup() {
         binding.notificationRecyclerView.layoutManager = LinearLayoutManager(context)
 
+
+
     }
 
     override fun onResume() {
@@ -45,6 +49,7 @@ class NotificationFragment : ViewBindingFragment<FragmentNotificationBinding>() 
     }
 
     private fun onListItemClick(position: Int) {
-        //loadFragment(EventDetailFragment())
+        data[position].notification.markAsSeen()
+//        loadDataToRecyclerView()
     }
 }

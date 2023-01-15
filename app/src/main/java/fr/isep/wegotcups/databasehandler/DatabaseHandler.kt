@@ -401,6 +401,14 @@ class DatabaseHandler {
             }
     }
 
+    fun updateNotification(notification: Notification) {
+        db.collection("notifications").document(notification.id.toString())
+            .update(notification.toHashMap()!!)
+            .addOnSuccessListener {
+                Log.d(TAG, "Notification successfully updated!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
 
 
 }
