@@ -11,15 +11,16 @@ class LocationEventFragment : ViewBindingFragment<FragmentLocationEventBinding>(
             = FragmentLocationEventBinding::inflate
 
     override fun setup() {
-        //TODO add location input
         binding.nextButton.setOnClickListener {
-            //TODO validate location input
-            (activity as MainActivity).newEventData.location = "here"
+            var loc = binding.nameInput.editText?.text.toString()
+            if (loc == null || loc == "null"){
+                loc = ""
+            }
+            (activity as MainActivity).newEventData.location = loc
             loadFragment(CoverPhotoEventFragment())
         }
 
         binding.backButton.setOnClickListener(){
-            //TODO
             loadFragmentFromLeft(DateEventFragment())
         }
     }

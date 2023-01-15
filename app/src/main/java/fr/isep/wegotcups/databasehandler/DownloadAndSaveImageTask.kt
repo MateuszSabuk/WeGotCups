@@ -28,7 +28,7 @@ class DownloadAndSaveImageTask(val context: Context) : AsyncTask<Pair<String, Im
         var result = false
         val (url, imageView) = pairArray[0]
         val names = url?.split('/')?.last()?.split('?')?.first()?.split("%2F")
-        val requestOptions = RequestOptions().override(100)
+        val requestOptions = RequestOptions().override(1000)
             .downsample(DownsampleStrategy.CENTER_INSIDE)
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)

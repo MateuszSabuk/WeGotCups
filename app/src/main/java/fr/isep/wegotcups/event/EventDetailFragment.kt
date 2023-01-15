@@ -1,5 +1,6 @@
 package fr.isep.wegotcups.event
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 import fr.isep.wegotcups.R
 import fr.isep.wegotcups.ViewBindingFragment
 import fr.isep.wegotcups.databasehandler.DatabaseHandler
+import fr.isep.wegotcups.databasehandler.DownloadAndSaveImageTask
 import fr.isep.wegotcups.databasehandler.EventData
 import fr.isep.wegotcups.databasehandler.User
 import fr.isep.wegotcups.databinding.FragmentEventDetailBinding
@@ -156,19 +158,30 @@ class EventDetailFragment(var event: EventData = EventData()) : ViewBindingFragm
 
     }
 
+    private fun setImage(){
+        if (event.imageUri == null){
+            binding.eventCoverPhotoImageView.setImageResource(R.drawable.event_cover)
+        } else {
+            DownloadAndSaveImageTask(activity as Context).execute(Pair(event.imageUri.toString(), binding.eventCoverPhotoImageView))
+            binding.eventCoverPhotoImageView.setImageURI(dbh.localUriFromUri(event.imageUri as Uri))
+        }
+    }
+
     private fun setText() {
         binding.eventName.title = event.name.toString()
         binding.eventDetailTime.text = event.getTimeFormatted("HH:mm")
         binding.date.text = event.getTimeFormatted("dd/MM/yyyy")
         binding.description.text = event.description
+        binding.location.text = event.location
         if (event.dresscode == null){
             event.dresscode = "not specified"
         }
         binding.dressCode.text = event.dresscode
     }
 
-    fun overwriteEvent(newEvent: EventData){
+    private fun overwriteEvent(newEvent: EventData){
         event = newEvent
+        setImage()
         setText()
     }
 

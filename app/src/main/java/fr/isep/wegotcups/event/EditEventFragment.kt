@@ -52,6 +52,7 @@ class EditEventFragment(val event: EventData) : ViewBindingFragment<FragmentEdit
 
         binding.nameInput.editText?.setText(event.name.toString())
         binding.description.editText?.setText(event.description.toString())
+        binding.location.editText?.setText(event.location)
         binding.location.editText?.setText(event.location?.toString())
         binding.selectDate.setText(event.getTimeFormatted("dd/MMMM/yyyy"))
         binding.selectTime.setText(event.getTimeFormatted("HH:mm"))
@@ -87,6 +88,13 @@ class EditEventFragment(val event: EventData) : ViewBindingFragment<FragmentEdit
             desc = ""
         }
         event.description = desc
+
+
+        var loc = binding.location.editText?.text.toString()
+        if (loc == null || loc == "null"){
+            loc = ""
+        }
+        event.location = loc
 
         if (date.isEmpty()){
             return false
