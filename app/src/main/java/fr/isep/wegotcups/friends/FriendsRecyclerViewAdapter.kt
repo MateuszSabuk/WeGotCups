@@ -11,7 +11,7 @@ import fr.isep.wegotcups.R
 class FriendsRecyclerViewAdapter (private val mList: List<FriendsItemViewModel>, private val onItemClicked: (position: Int) -> Unit) : RecyclerView.Adapter<FriendsRecyclerViewAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsRecyclerViewAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.card_notification_view, parent, false)
+            .inflate(R.layout.card_show_my_friends, parent, false)
 
         return FriendsRecyclerViewAdapter.ViewHolder(view, onItemClicked)
     }
