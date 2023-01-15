@@ -61,30 +61,63 @@ class DatabaseHandler {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit, afterEventsLoadedHorizontal: () -> Unit) {
-        db.collection("events")
-            .whereEqualTo("owner", auth.currentUser?.uid)
-            .get()
-            .addOnSuccessListener { myDocuments ->
+    fun getMyEvents(funForEveryEvent: (EventData) -> Unit, afterEventsLoaded: () -> Unit, sharedWithMe:Int = 0) {
+        when (sharedWithMe){
+            1 -> {
                 db.collection("events")
                     .whereArrayContains("sharedWith", auth.currentUser?.uid.toString())
                     .get()
-                    .addOnSuccessListener { sharedDocuments ->
-                        var documents = (myDocuments + sharedDocuments).distinct()
+                    .addOnSuccessListener { documents ->
                         for (document in documents) {
                             val event = EventData(document)
                             funForEveryEvent(event)
                         }
                         afterEventsLoaded()
-                        afterEventsLoadedHorizontal()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents: ", exception)
+                    }}
+            2 -> {
+                db.collection("events")
+                    .whereEqualTo("owner", auth.currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { myDocuments ->
+                        db.collection("events")
+                            .whereArrayContains("sharedWith", auth.currentUser?.uid.toString())
+                            .get()
+                            .addOnSuccessListener { sharedDocuments ->
+                                var documents = (myDocuments + sharedDocuments).distinct()
+                                for (document in documents) {
+                                    val event = EventData(document)
+                                    funForEveryEvent(event)
+                                }
+                                afterEventsLoaded()
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w(TAG, "Error getting documents: ", exception)
+                            }
                     }
                     .addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting documents: ", exception)
                     }
             }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
+            else -> {
+                db.collection("events")
+                    .whereEqualTo("owner", auth.currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val event = EventData(document)
+                            funForEveryEvent(event)
+                        }
+                        afterEventsLoaded()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents: ", exception)
+                    }
             }
+
+        }
     }
     fun getEvent(eventReturn: (EventData)-> Unit, eid: String){
         db.collection("events")
@@ -155,8 +188,7 @@ class DatabaseHandler {
     }
 
     fun sendNotificationToUser(type: Int, uid:String, from:String = auth.currentUser?.uid.toString(), eid: String? = null) {
-        var notification: Notification
-        notification = if(eid != null){
+        var notification: Notification = if(eid != null){
             Notification(type, uid, from)
         }else {
             Notification(type, uid, from, eid)

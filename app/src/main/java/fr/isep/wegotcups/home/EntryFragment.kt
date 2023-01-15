@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
@@ -21,6 +22,8 @@ import kotlin.collections.ArrayList
 class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     private var data = ArrayList<EventItemViewModel>()
     private var filtered = listOf<EventItemViewModel>()
+    private var horizontalData = ArrayList<EventItemViewModel>()
+    private var horizontalFiltered = listOf<EventItemViewModel>()
     private val dbh = DatabaseHandler()
     private lateinit var user: User
     private lateinit var adapter: EventsRecyclerViewAdapter
@@ -31,6 +34,7 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
 
     override fun setup() {
         data = ArrayList()
+        horizontalData = ArrayList()
 
         updateUsernameAndAvatar()
         (activity as MainActivity).userUpdateFunctions.add(::updateUsernameAndAvatar)
@@ -50,7 +54,8 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
 
         //TODO make loading smoother
 
-        dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter, ::loadHorizontalRecyclerAdapter)
+        dbh.getMyEvents(::addEventToData, ::loadRecyclerAdapter)
+        dbh.getMyEvents(::addEventToHorizontalData, ::loadHorizontalRecyclerAdapter,1)
     }
 
     override fun onResume() {
@@ -65,12 +70,28 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
         }
     }
 
+    private fun onHorizontalListItemClick(position: Int) {
+        if (binding.showOldSwitch.isChecked) {
+            loadFragment(EventDetailFragment(horizontalFiltered[position].event))
+        }else{
+            loadFragment(EventDetailFragment(horizontalData[position].event))
+        }
+    }
+
     private fun addEventToData(ed: EventData) {
         data.add(EventItemViewModel(ed))
         data.sortWith(
             compareBy { it.event.datetime }
         )
         filtered = data.filter { it.event.datetime > Timestamp(Date()) }
+    }
+
+    private fun addEventToHorizontalData(ed: EventData) {
+        horizontalData.add(EventItemViewModel(ed))
+        horizontalData.sortWith(
+            compareBy { it.event.datetime }
+        )
+        horizontalFiltered = horizontalData.filter { it.event.datetime > Timestamp(Date()) }
     }
 
     private fun loadRecyclerAdapter() {
@@ -83,12 +104,15 @@ class EntryFragment : ViewBindingFragment<FragmentEntryBinding>() {
     }
 
     private fun loadHorizontalRecyclerAdapter() {
-        adapterHorizontal = if (binding.showOldSwitch.isChecked) {
-            EventsHorizontalRecyclerViewAdapter(filtered) { position -> onListItemClick(position) }
+        val hideOld = binding.showOldSwitch.isChecked
+        adapterHorizontal = if (hideOld) {
+            EventsHorizontalRecyclerViewAdapter(horizontalFiltered) { position -> onHorizontalListItemClick(position) }
         }else{
-            EventsHorizontalRecyclerViewAdapter(data) { position -> onListItemClick(position) }
+            EventsHorizontalRecyclerViewAdapter(horizontalData) { position -> onHorizontalListItemClick(position) }
         }
         binding.myEventsRecyclerView.adapter = adapterHorizontal
+        binding.myEventsRecyclerView.isVisible =
+            !((hideOld && horizontalFiltered.isEmpty()) || (!hideOld && horizontalData.size == 0))
     }
 
     private fun updateUsernameAndAvatar(){
