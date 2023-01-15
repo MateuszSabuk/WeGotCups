@@ -1,57 +1,43 @@
 # WeGotCups
-Event management and sharing android application
-Finall project for Mobile Developement course at ISEP
 
+By Patrik Jankuv and Mateusz Sabuk
 
+This is the final version before the submission.
 
-## Starting notes
-### Activities
-- Register
-	+ with email/oauth/something
-	+ name
-	+ password
-- Login
-	+ Depends on the register
-- Edit my user
-	+ add links for social media
-- View user
-	+ Social networks links
-	+ Events
-		* organized by them
-		* attended to
-- My Events
-	+ Organized by me
-	+ Invited to
-		* accept
-		* decline
-		* Later
-	+ I want to attend
-	+ Happened
-- Show Event
-	+ name
-	+ owner
-	+ Description
-	+ location
-	+ Spotify collaborative playlist
-	- Who what to bring if any
-	- voting
-	- payment sharing
-	- dress code
-	- hashtags?
+The report is sent via email and also attached here as Group13_Jankuv_Sabuk.pdf
 
-	- how did you like it 
-- Share qrcode/link
-### Things to implement
-- Firebase as db/server
-- Qrscanner and more sharing
-- Openmaps or other type of a map
-- Adding events to google calendar
-- Animations
-- 
+## Shortly
 
+WeGotCups is a mobile application which helps to organize events. Allows users to invite their friends to the event and helps make events easier to manage.
 
-later 
-- lottie
+### List of main features
+- creating a new event
+- editing an existing event
+- deleting an event
+- reading an event
+- filtering old events
+- inviting friends to an event
+- sharing a music playlist
+- notifications
+- editing profile
+- adding friends
+- email + password authentification
+- email verification
+- profile pictures
 
-## UI
-https://www.figma.com/file/Nldf99VMBrkpcyr9qAGUMI/Event-Planner?node-id=52695%3A23854&t=FTEVBrZ58nMxoFie-1
+### Tech specs
+- Target SDK: 32
+- Min SDK: 23
+- Version: 1.0
+- Language: Kotlin
+
+### Design system
+We decided to use Material Design 3, the newest design system from Google. That allowed us to make a better-looking app with a fresh and modern look.
+
+### Used Technologies
+- Google Firebase
+- Firebase Auth
+- Firestore
+- Firebase Storage
+- Glide
+- Material 3
