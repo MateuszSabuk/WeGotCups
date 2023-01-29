@@ -6,6 +6,8 @@ This is the final version before the submission.
 
 The report is sent via email and also attached here as Group13_Jankuv_Sabuk.pdf
 
+Link to presentation on Youtube: https://www.youtube.com/watch?v=lgQckiQVo-g
+
 ## Shortly
 
 WeGotCups is a mobile application which helps to organize events. Allows users to invite their friends to the event and helps make events easier to manage.
